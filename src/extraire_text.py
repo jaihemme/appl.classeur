@@ -14,6 +14,7 @@ def extraire_texte(fichier_pdf, pages, module):
     chemin: Path = Path(fichier_pdf)  # le fichier existe, vérifié par click
     print(f"Fichier: {chemin.resolve()}")
     document = Document(fichier_pdf, None, module, False, True)
+    document.pages = pages
     print(f"Document: {document.chemin.name}")
     print(f"Texte extrait avec le module '{document.option_module}' ({document.pages} pages):"
           f"\n{document.extraire_texte()}")
