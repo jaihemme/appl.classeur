@@ -22,12 +22,13 @@ logger.addHandler(handler)
 @click.option("-m", "--module", type=click.Choice(["mac", "simple", "tolerant"],
         case_sensitive=False), default=None, show_default=True, help="Choix du module d'extraction")
 @click.option("-r", "--ranger", is_flag=True, help="Range le(s) document(s) dans le classeur.")
-def classement(source, log, base, module, ranger):
+@click.option("-t", "--texte", is_flag=True, help="Affiche le texte extrait.")
+def classement(source, log, base, module, ranger, texte):
     """Classement des fichiers à partir de SOURCE."""
     initialise_logging(log)
-    logger.debug(f"arguments: source:{source} - base:{base} - module:{module} - range:{ranger}")
+    logger.debug(f"arguments: source:{source} - base:{base} - module:{module} - range:{ranger} - texte:{texte}")
 
-    document = Document(source, base, module, ranger)
+    document = Document(source, base, module, ranger, texte)
 
     # on a soit un document…
     if isinstance(document, Document):

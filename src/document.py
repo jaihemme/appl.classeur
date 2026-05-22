@@ -20,7 +20,7 @@ class Document:
     MODE: int = 0o100400  # 'r--------'
     LISTE_FICHIERS = []
 
-    def __new__(cls, argument_source, argument_base, option_module, option_ranger=False):
+    def __new__(cls, argument_source, argument_base, option_module, option_ranger=False, option_texte=False):
         logger.debug(f"__new__: {argument_source} - module: {option_module} - ranger: {option_ranger}")
         source: Path = Path(argument_source)
 
@@ -42,7 +42,7 @@ class Document:
 
         raise ValueError(f"Chemin de type indéfinie : {argument_source}")
 
-    def __init__(self, argument_source, argument_base, option_module, option_ranger=False):
+    def __init__(self, argument_source, argument_base, option_module, option_ranger=False, option_texte=False):
         logger.debug(f"__init__: {argument_source} - module: {option_module} - ranger: {option_ranger}")
         argument_source_nfc = unicodedata.normalize('NFC', argument_source)
         self.chemin: Path = Path(argument_source_nfc)  # le fichier existe, vérifié dans __new__
@@ -51,6 +51,7 @@ class Document:
         self.mode: int = self.chemin.stat().st_mode  # type de fichier et permissions
         # options
         self.option_ranger: bool = option_ranger
+        self.option_texte: bool = option_texte
         # classeur, si dossier avec fichier de configuration existe
         # s'il n'existe pas ou l'identification échoue, cherche le classeur qui correspond
         argument_base_nfc = unicodedata.normalize('NFC', argument_base) if argument_base else None
@@ -75,7 +76,8 @@ class Document:
         self.classement_ok: bool = self.nom_fichier_ok and self.timestamp_fichier_ok and self.permission_fichier_ok
 
         self.log_all()
-        self.resumer()
+        if not option_texte:
+            self.resumer()
 
     def log_all(self):
         logger.info(f"chemin: {self.chemin}")
@@ -167,6 +169,7 @@ class Document:
 
     def extraire_texte_swift(self):
         """Extrait le texte d'une image avec le programme swift sur MacOS."""
+        self.option_module = 'mac'
         logger.debug(f"extraire_text_swift: {self.chemin} - {self.pages}")
 
         result = subprocess.run(
