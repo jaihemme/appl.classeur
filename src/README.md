@@ -1,6 +1,7 @@
 # Classeur - Outil de classement automatique de documents PDF
 
-**Classeur** est une application CLI conçue pour automatiser le classement, l'identification et la validation de documents PDF dans une structure de dossiers organisée (classeurs).
+**Classeur** est une application CLI conçue pour automatiser le classement, l'identification et 
+la validation de documents PDF dans une structure de dossiers organisée (classeurs).
 
 ## 📁 Structure du projet
 
@@ -84,16 +85,16 @@ Un **classeur** est un dossier contenant un fichier de configuration JSON nommé
 
 ### Clés de configuration
 
-| Clé | Type | Description |
-|-----|------|-------------|
-| `description` | str | Description du classeur |
-| `module` | str | Module d'extraction par défaut (`mac`, `simple`, `tolerant`) |
-| `pages` | int | Nombre de pages à extraire (défaut: 2) |
-| `images` | bool | Indique si le PDF contient des images |
-| `identification` | list | Liste de motifs pour identifier le document |
-| `patterns` | dict | Expressions régulières pour extraire des valeurs |
-| `transform` | dict | Remplacements de texte dans le nom final |
-| `nom_fichier` | list | Règles de construction du nom de fichier |
+| Clé              | Type | Description                                                  |
+|------------------|------|--------------------------------------------------------------|
+| `description`    | str  | Description du classeur                                      |
+| `module`         | str  | Module d'extraction par défaut (`mac`, `simple`, `tolerant`) |
+| `pages`          | int  | Nombre de pages à extraire (défaut: 2)                       |
+| `images`         | bool | Indique si le PDF contient des images                        |
+| `identification` | list | Liste de motifs pour identifier le document                  |
+| `patterns`       | dict | Expressions régulières pour extraire des valeurs             |
+| `transform`      | dict | Remplacements de texte dans le nom final                     |
+| `nom_fichier`    | list | Règles de construction du nom de fichier                     |
 
 ### Construction du nom de fichier
 
@@ -158,19 +159,19 @@ Le nom est construit à partir de la liste `nom_fichier` :
 
 ### `classement.py`
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--log, -l` | choice | Niveau de journalisation: `info`, `warn`, `error`, `debug`, `none` |
-| `--base, -b` | path | Dossier racine des classeurs |
-| `--module, -m` | choice | Module d'extraction: `mac`, `simple`, `tolerant` |
-| `--ranger, -r` | flag | Déplacer et renommer les documents |
-| `--texte, -t` | flag | Afficher le texte extrait |
+| Option         | Type   | Description                                                        |
+|----------------|--------|--------------------------------------------------------------------|
+| `--log, -l`    | choice | Niveau de journalisation: `info`, `warn`, `error`, `debug`, `none` |
+| `--base, -b`   | path   | Dossier racine des classeurs                                       |
+| `--module, -m` | choice | Module d'extraction: `mac`, `simple`, `tolerant`                   |
+| `--ranger, -r` | flag   | Déplacer et renommer les documents                                 |
+| `--texte, -t`  | flag   | Afficher le texte extrait                                          |
 
 ### `extraire_text.py`
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--pages, -p` | int | Nombre de pages à extraire (défaut: 1) |
+| Option         | Type   | Description                                         |
+|----------------|--------|-----------------------------------------------------|
+| `--pages, -p`  | int    | Nombre de pages à extraire (défaut: 1)              |
 | `--module, -m` | choice | Module: `mac`, `simple`, `tolerant` (défaut: `mac`) |
 
 ---
@@ -199,24 +200,24 @@ Document classé ✅
 
 ## 🔧 Modules d'extraction
 
-| Module | Description | When to use |
-|--------|-------------|-------------|
-| `mac` | Utilise SwiftOCR (native macOS) | Documents scannés, images |
-| `simple` | pdfplumber avec extraction simple | PDF textuels simples |
-| `tolerant` | pdfplumber avec tolérance | PDF avec espaces aléatoires |
+| Module     | Description                       | Cas d'utilisation           |
+|------------|-----------------------------------|-----------------------------|
+| `mac`      | Utilise SwiftOCR (native macOS)   | Documents scannés, images   |
+| `simple`   | pdfplumber avec extraction simple | PDF textuels simples        |
+| `tolerant` | pdfplumber avec tolérance         | PDF avec espaces aléatoires |
 
 ---
 
 ## 📝 Codes de sortie et symboles
 
-| Symbole | Signification |
-|---------|---------------|
-| ✅ | Validation réussie |
-| ❌ | Échec de validation |
-| ⚠️ | Avertissement (action recommandée) |
-| ℹ️ | Information |
-| 📂 | Classeur identifié |
-| 📅 | Date modifiée |
+| Symbole | Signification                      |
+|---------|------------------------------------|
+| ✅       | Validation réussie                 |
+| ❌       | Échec de validation                |
+| ⚠️      | Avertissement (action recommandée) |
+| ℹ️      | Information                        |
+| 📂      | Classeur identifié                 |
+| 📅      | Date modifiée                      |
 
 ---
 
