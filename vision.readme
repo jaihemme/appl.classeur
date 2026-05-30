@@ -8,3 +8,7 @@ $ swiftc vision.swift -o swiftocr
 
 #test
 ./swiftocr <fichier-pdf> --lang fr-FR --min-conf 0.7 --pages 1
+
+# GUI
+voir ~/Documents/swift/OCRApp
+

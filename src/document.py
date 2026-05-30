@@ -60,7 +60,7 @@ class Document:
         self.config: dict = self.classeur.config if self.classeur else {}
         self.config_ok: bool = True if self.config else False
         self.option_module: str = option_module if option_module else self.config.get('module', None)
-        self.pages = self.config.get('pages', 2)
+        self.pages: int = self.config.get('pages', 2)
         self.texte: str = self.extraire_texte()
         self.identification_ok: bool = self.verifier_identification() if self.texte else False
         # résultat de la recherche de patterns, résultat dans les values
@@ -233,6 +233,7 @@ class Document:
 
         # il faut les critères d'identification (fichier config d'un classeur)
         # sinon on cherche sur tous les classeurs
+        self.identification_ok = False
         if not self.classeur or not self.config:
             Classeur(self.base, True)
             nombre_classeurs = len(Classeur.LISTE_CLASSEUR)
@@ -522,41 +523,30 @@ document.__new__()
 - chemin.isFile -> Document
 - chemin.isDir -> List [str]
 document.__init__()
-- document.traite_fichier
-
-1er arg: source
-- si 1 dossier:
-    boucle autour de document.traite_fichier avec chaque fichier (option_pdf) su dossier
-- si 1 fichier:
-    document.traite_fichier
-        document.traite_classeur # contrôle si le fichier est dans un dossier avec config_file (=classeur)
-        => self.classeur (not None)
-            document.charge_config # contrôle minimum: description, identification, pattern, nom_fichier
-            => self.config (not {})
-                document.extraire_texte
-                => self.texte (not '')
-                    document.verifier_identification
-                    if not self.identification_ok:
-                        boucle autour des classeurs jusqu'à identification
-                    => self.identification_ok
-                        document.verifier_patterns
-                        => self.pattern_ok, self.config['values']
-                            document.traite_nom_fichier
-                            => self.nom_fichier_ok  # le nom de fichier a pu être créée
-                            if option.ranger:
-                                self.document.ranger
-                            => self.classement_ok   # le nom du fichier est correct
-                            document.traite_date_fichier
-                            => self.date_fichier_ok
-                            document.traite_permission_fichier
-                            => self.permission_fichier_ok
-                    if not self.identification_ok:
-                        
-                    document.affiche_etat
+- chemin: Path = Path du fichier source en NFC, le fichier existe, vérifié dans __new__
+- mtime: datetime # Obtenir l'heure de modification (mtime) du fichier
+- mode: int # type de fichier et permissions
+- option_ranger: bool # exécute le déplacement, renommage, changement de mtime et mode
+- option_texte: bool # affiche le texte
+- base: Path # argument ou Classeur.NOM_BASE, répertoire racine des classeurs
+- classeur: Optional[Classeur] # parent du chemin ou None ou premier classeur identifié depuis base
+- config: dict = self.classeur.config if self.classeur else {}
+- config_ok: bool = True if self.config else False
+- option_module: str # argument ou self.config.get('module', None). ??? simple
+- pages:int = self.config.get('pages', 2)
+- texte: str = self.extraire_texte(), toujours extraire_texte_swift() si texte est vide
+- identification_ok: bool = self.verifier_identification() if self.texte else False
+- patterns_ok: bool # résultat de la recherche de patterns, résultat dans les values if self.identification_ok else False
+- chemin_document: Optional[Path] # chemin complet selon config if self.patterns_ok else False
+- ??? chemin_ok: bool # si placement das le classeur est correct if self.patterns_ok else False
+- nom_fichier_ok: bool # résultat de la vérification du nom de fichier comparé à la config
+- timestamp_fichier_ok: bool # résultat de la vérification de la date de modification du fichier, comparé à la config
+- permission_fichier_ok: bool # résultat de la vérification des permissions du fichier if self.nom_fichier_ok else False
+- classement_ok: bool # résultat du placement de document (si tout est ok)
         
 option_base dossier: définit la base des classeurs
 option_log niveau: définit la verbosité des logs
-option_ocr: extrait le texte à partir des images du pdf
+option_module: module d'extraction ('mac' pour les images), easyocr s'il faut vraiment
 
 logger.error(f"𐄂 ...)
 logger.info(f"✓ ...)
