@@ -9,6 +9,7 @@ import os
 # Import modules
 from src.document import Document
 from src.classeur import Classeur
+from src.cli_options import CliOptions
 
 
 class TestDocumentNew:
@@ -17,7 +18,7 @@ class TestDocumentNew:
     def test_new_with_nonexistent_file(self, tmp_path):
         """Test __new__ with a non-existent file."""
         with pytest.raises(FileNotFoundError):
-            Document(str(tmp_path / "nonexistent.pdf"), None, None, False, False)
+            Document(tmp_path / "nonexistent.pdf", CliOptions())
 
     def test_new_with_directory(self, tmp_path):
         """Test __new__ with a directory - should return list of PDFs."""
@@ -30,23 +31,22 @@ class TestDocumentNew:
         (test_dir / "test2.pdf").write_text("%PDF-1.4")
         (test_dir / "ignored.txt").write_text("not a pdf")
         
-        result = Document(str(test_dir), None, "mac", False, False)
+        documents: list = Document.lister_fichiers(CliOptions(str(test_dir)))
         
-        assert isinstance(result, list)
-        assert len(result) == 2
-        assert all("test" in f for f in result)
-        assert all(f.endswith(".pdf") for f in result)
+        assert len(documents) == 2
+        assert all("test" in str(f) for f in documents)
+        assert all(str(f).endswith(".pdf") for f in documents)
 
     def test_new_with_valid_pdf(self, tmp_path):
         """Test __new__ with a valid PDF file - should return Document instance."""
         pdf_path = tmp_path / "test.pdf"
         pdf_path.write_text("%PDF-1.4\n1 0 obj\n>>\nendobj")
         
-        result = Document(str(pdf_path), None, "mac", False, False)
+        result = Document(pdf_path, CliOptions(extractor='simple'))
         
         # Note: This will fail during __init__ because pdfplumber can't read this
-        # but we're testing __new__ only
-        assert isinstance(result, Document)
+        # puis il essaie avec 'mac' sans succès aussi
+        assert result.chemin == pdf_path
 
     def test_new_with_non_pdf_file(self, tmp_path):
         """Test __new__ with a non-PDF file."""
@@ -55,7 +55,7 @@ class TestDocumentNew:
         
         #with pytest.raises(ValueError, match="Chemin de type indéfinie"):
         #    Document(str(text_file), None, None, False, False)
-        document = Document(str(text_file), None, None, False, False)
+        document = Document(text_file, CliOptions(extractor='simple'))
         assert document.texte == ''
 
 class TestDocumentTextExtraction:
@@ -80,7 +80,7 @@ fi
         mock_script.chmod(0o755)
         monkeypatch.setattr(Document, "SWIFTOCR", str(mock_script))
         
-        doc = Document(str(pdf_path), None, "mac", False, True)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         doc.pages = 1
         
         texte = doc.extraire_texte_swift()
@@ -102,7 +102,7 @@ exit 1
         mock_script.chmod(0o755)
         monkeypatch.setattr(Document, "SWIFTOCR", str(mock_script))
         
-        doc = Document(str(pdf_path), None, "mac", False, True)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         doc.pages = 1
         
         texte = doc.extraire_texte_swift()
@@ -127,7 +127,7 @@ exit 0
         mock_script.chmod(0o755)
         monkeypatch.setattr(Document, "SWIFTOCR", str(mock_script))
         
-        doc = Document(str(pdf_path), None, "mac", False, True)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         doc.pages = 1
         
         texte = doc.extraire_texte()
@@ -150,7 +150,7 @@ exit 0
         mock_script.chmod(0o755)
         monkeypatch.setattr(Document, "SWIFTOCR", str(mock_script))
         
-        doc = Document(str(pdf_path), None, "mac", False, True)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         doc.pages = 1
         
         texte = doc.extraire_texte()
@@ -197,7 +197,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='simple', base=str(classeur_dir)))
         
         assert doc.identification_ok is True
 
@@ -236,7 +236,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac', base=str(classeur_dir)))
         
         assert doc.identification_ok is False
 
@@ -282,7 +282,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac', base=str(classeur_dir)))
         
         assert doc.patterns_ok is True
         assert doc.config["values"]["reference"] == "TEST-1234"
@@ -326,7 +326,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         
         assert doc.patterns_ok is False
 
@@ -376,7 +376,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         
         assert doc.nom_fichier_ok is True
         assert doc.config["values"]["nom_fichier"] == nom_fichier
@@ -425,7 +425,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         
         # Should have transformed "Facture" to "FACT"
         assert "FACT" in doc.config["values"]["nom_fichier"]
@@ -570,7 +570,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         
         # Date should match
         assert doc.timestamp_fichier_ok is True
@@ -618,7 +618,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         
         # Permissions should match
         assert doc.permission_fichier_ok is True
@@ -665,7 +665,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         
         # File should not have been moved
         assert pdf_path.exists()
@@ -708,7 +708,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         
         # File name should not match
         assert doc.nom_fichier_ok is False
@@ -762,7 +762,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         doc.resumer()
         
         captured = capsys.readouterr()
@@ -804,7 +804,7 @@ exit 0
         Classeur.LISTE_CONFIG = []
         Classeur.NOM_BASE = Path(tmp_path)
         
-        doc = Document(str(pdf_path), str(tmp_path), "mac", False, False)
+        doc = Document(pdf_path, CliOptions(extractor='mac'))
         doc.resumer()
         
         captured = capsys.readouterr()

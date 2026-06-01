@@ -1,5 +1,6 @@
 from pathlib import Path
 from classeur import Classeur
+from cli_options import CliOptions
 import logging
 import pdfplumber
 from pdf2image import convert_from_path
@@ -18,48 +19,26 @@ logger = logging.getLogger(__name__)
 class Document:
     SWIFTOCR = "/Users/yogi/Docker/appl.classeur/swiftocr"
     MODE: int = 0o100400  # 'r--------'
-    LISTE_FICHIERS = []
+    DOCUMENT_PATTERN = "[a-z|A-Z|0-9]*.pdf"
 
-    def __new__(cls, argument_source, argument_base, option_module, option_ranger=False, option_texte=False):
-        logger.debug(f"__new__: {argument_source} - module: {option_module} - ranger: {option_ranger}")
-        source: Path = Path(argument_source)
-
-        if not source.exists():
-            raise FileNotFoundError(f"Fichier ou dossier introuvable : '{argument_source}'")
-
-        # si la source est un dossier, on retourne une liste de fichiers PDF qu'il contient
-        # le pattern évite les fichiers invisibles et ceux dont le nom comment par un caractère spécial
-        if source.is_dir():
-            pattern = '[a-z,A-Z,0-9]*.pdf'
-            logger.debug(f"Recherche de documents avec pattern '{pattern}' dans dossier '{source}'")
-            cls.LISTE_FICHIERS = [fichier.resolve() for fichier in source.rglob(pattern)]
-            logger.info(f"il y a {len(cls.LISTE_FICHIERS)} document(s) dans '{source}'")
-            return [str(fichier) for fichier in cls.LISTE_FICHIERS]
-
-        # si la source est un fichier, on retourne une instance de Document
-        if source.is_file():
-            return super().__new__(cls)  # comportement par défaut
-
-        raise ValueError(f"Chemin de type indéfinie : {argument_source}")
-
-    def __init__(self, argument_source, argument_base, option_module, option_ranger=False, option_texte=False):
-        logger.debug(f"__init__: {argument_source} - module: {option_module} - ranger: {option_ranger}")
-        argument_source_nfc = unicodedata.normalize('NFC', argument_source)
-        self.chemin: Path = Path(argument_source_nfc)  # le fichier existe, vérifié dans __new__
-        # Obtenir l'heure de modification (mtime) du fichier
+    # def __init__(self, fichier, options.base, options.extractor, self.cli_options.ranger=False, options.texte=False):
+    def __init__(self, chemin_fichier: Path, options: CliOptions):
+        logger.debug(f"__init__: {chemin_fichier} - extracteur: {options.extractor} - ranger: {options.ranger} "
+                     f"- texte: {options.texte}")
+        self.chemin: Path = chemin_fichier  # le fichier existe, vérifié dans lister_fichiers
+        self.cli_options: CliOptions = options
+        # obtenir l'heure de modification (mtime) du fichier
         self.mtime: datetime = datetime.fromtimestamp(self.chemin.stat().st_mtime)
-        self.mode: int = self.chemin.stat().st_mode  # type de fichier et permissions
-        # options
-        self.option_ranger: bool = option_ranger
-        self.option_texte: bool = option_texte
+        # obtenir le type de fichier et ses permissions
+        self.mode: int = self.chemin.stat().st_mode
         # classeur, si dossier avec fichier de configuration existe
         # s'il n'existe pas ou l'identification échoue, cherche le classeur qui correspond
-        argument_base_nfc = unicodedata.normalize('NFC', argument_base) if argument_base else None
-        self.base: Path = Path(argument_base_nfc) if argument_base_nfc else Classeur.NOM_BASE
+        base_nfc = unicodedata.normalize('NFC', str(Path(options.base).resolve())) if options.base else None
+        self.base: Path = Path(base_nfc) if base_nfc else Classeur.NOM_BASE
         self.classeur: Optional[Classeur] = Classeur(self.chemin.parent, option_base=False)
         self.config: dict = self.classeur.config if self.classeur else {}
         self.config_ok: bool = True if self.config else False
-        self.option_module: str = option_module if option_module else self.config.get('module', None)
+        self.extractor: str = options.extractor if options.extractor else self.config.get('module', None)
         self.pages: int = self.config.get('pages', 2)
         self.texte: str = self.extraire_texte()
         self.identification_ok: bool = self.verifier_identification() if self.texte else False
@@ -76,18 +55,45 @@ class Document:
         self.classement_ok: bool = self.nom_fichier_ok and self.timestamp_fichier_ok and self.permission_fichier_ok
 
         self.log_all()
-        if not option_texte:
+        if not options.texte:
             self.resumer()
+
+    @classmethod
+    def lister_fichiers(cls, options: CliOptions) -> list[Path]:
+        source_path: Path = Path(options.source)
+        fichier_nfc = unicodedata.normalize('NFC', str(source_path.resolve()))
+
+        if source_path.is_file():
+            if source_path.suffix == '.pdf':
+                logger.info(f"liste avec 1 fichier pdf")
+                return [Path(fichier_nfc)]
+            else:
+                logger.error(f"liste vide, le fichier '{options.source}' n'est pas PDF")
+                return []
+        if source_path.is_dir():
+            liste = []
+            for fichier_path in source_path.rglob(Document.DOCUMENT_PATTERN):
+                fichier_nfc = unicodedata.normalize('NFC', str(fichier_path.resolve()))
+                liste.append(Path(fichier_nfc))
+            if liste:
+                logger.info(f"liste avec {len(liste)} fichier(s) pdf")
+                return liste
+            else:
+                logger.error(f"liste vide, pas trouvé de fichier pdf dans '{options.source}'")
+                return []
+
+        logger.error(f"liste vide, type de fichier non traité '{options.source}'")
+        return []
 
     def log_all(self):
         logger.info(f"chemin: {self.chemin}")
         logger.info(f"mtime: {self.mtime}")
         logger.info(f"mode: {self.mode}")
-        logger.info(f"option_module: {self.option_module}")
+        logger.info(f"options.extractor: {self.extractor}")
         logger.info(f"base: {self.base}")
         logger.info(f"classeur: {self.classeur}")
         logger.info(f"config: {self.config}")
-        logger.info(f"module: '{self.option_module}'")
+        logger.info(f"module: '{self.extractor}'")
         logger.info(f"pages: '{self.pages}'")
         logger.info(f"texte: '{self.texte:.150s}'")
         logger.info(f"identification: {self.config.get('identification', [])}")
@@ -99,7 +105,7 @@ class Document:
         logger.info(f"nom_fichier_ok: {self.nom_fichier_ok}")
         logger.info(f"timestamp_fichier_ok: {self.timestamp_fichier_ok}")
         logger.info(f"permission_fichier_ok: {self.permission_fichier_ok}")
-        logger.info(f"ranger: {self.option_ranger}")
+        logger.info(f"ranger: {self.cli_options.ranger}")
         logger.info(f"classement_ok: {self.classement_ok}\n")
 
     def extraire_texte(self) -> str:
@@ -113,13 +119,13 @@ class Document:
             logger.error(f"Fichier non PDF")
             return ''
 
-        if self.option_module is None or self.option_module == "mac":
+        if self.extractor is None or self.extractor == "mac":
             texte = self.extraire_texte_swift()
-            self.option_module = "mac"
+            self.extractor = "mac"
         else:
             texte = self.extraire_texte_pdf()
             if not texte:
-                logger.info(f"Aucun texte extrait avec '{self.option_module}' -> essai avec 'mac'")
+                logger.info(f"Aucun texte extrait avec '{self.extractor}' -> essai avec 'mac'")
                 texte = self.extraire_texte_swift()
 
         if texte == '':
@@ -139,14 +145,14 @@ class Document:
 
     def extraire_texte_pdf(self):
         """Extrait du texte des <nombre_pages> premières pages"""
-        logger.debug(f"extraire_texte_pdf : {self.chemin} - module: {self.option_module} - {self.pages} pages")
+        logger.debug(f"extraire_texte_pdf : {self.chemin} - module: {self.extractor} - {self.pages} pages")
         try:
             with pdfplumber.open(self.chemin) as pdf:
                 texte_extrait = ""
                 for page in pdf.pages:
-                    if self.option_module == "simple":
+                    if self.extractor == "simple":
                         texte_extrait += page.extract_text_simple()
-                    if self.option_module == "tolerant":
+                    if self.extractor == "tolerant":
                     # pour les derniers pdf des extraits de compte de VZ qui comportent des espaces aléatoires:
                         texte_extrait += page.extract_text(
                             x_tolerance=4,  # tolérance horizontale pour grouper les caractères
@@ -169,7 +175,7 @@ class Document:
 
     def extraire_texte_swift(self):
         """Extrait le texte d'une image avec le programme swift sur MacOS."""
-        self.option_module = 'mac'
+        self.extractor = 'mac'
         logger.debug(f"extraire_text_swift: {self.chemin} - {self.pages}")
 
         result = subprocess.run(
@@ -364,7 +370,7 @@ class Document:
             self.nom_fichier_ok = True
             return True
 
-        if not self.option_ranger:
+        if not self.cli_options.ranger:
             logger.error(f"le fichier doit être rangé: "
                          f"'{self.chemin}' -> '{self.classeur.chemin_court}/{nom_fichier}'")
             self.nom_fichier_ok = False
@@ -433,7 +439,7 @@ class Document:
         else:
             logger.error(f"le fichier n'a pas la date de modification correcte: {self.mtime}")
             self.timestamp_fichier_ok = False
-            if not self.option_ranger:
+            if not self.cli_options.ranger:
                 return False
 
         # option ranger: modifie le timestamp
@@ -453,7 +459,7 @@ class Document:
         else:
             logger.error(f"Les permissions du fichier sont fausses.")
             self.permission_fichier_ok = False
-            if not self.option_ranger:
+            if not self.cli_options.ranger:
                 return False
 
         # option ranger: modifie les permissions
@@ -473,11 +479,11 @@ class Document:
         else:
             print(f"❌ configuration manquante dans le classeur '{self.chemin.parent.name}'")
         if self.texte:
-            print(f"✅ texte extrait avec module '{self.option_module}' "
-                  f"({'config' if self.config.get('module') == self.option_module else 'argument'}), "
+            print(f"✅ texte extrait avec module '{self.extractor}' "
+                  f"({'config' if self.config.get('module') == self.extractor else 'argument'}), "
                   f"{self.pages} page(s)")
         else:
-            print(f"❌ il n'y a pas de texte extrait avec module '{self.option_module}',"
+            print(f"❌ il n'y a pas de texte extrait avec module '{self.extractor}',"
                   f" essaie un autre module ('mac', 'simple', 'tolerant')")
             return
 
@@ -514,7 +520,7 @@ class Document:
             print(f"✅ le fichier est classé dans le bon classeur '{self.classeur.chemin_classeur.name}'")
         else:
             print(f"❌ le fichier n'est pas classé dans le bon classeur")
-        if not self.option_ranger and self.identification_ok and self.patterns_ok:
+        if not self.cli_options.ranger and self.identification_ok and self.patterns_ok:
             print(f"⚠️ active l'option 'ranger' pour classer le document")
 
 
@@ -526,13 +532,13 @@ document.__init__()
 - chemin: Path = Path du fichier source en NFC, le fichier existe, vérifié dans __new__
 - mtime: datetime # Obtenir l'heure de modification (mtime) du fichier
 - mode: int # type de fichier et permissions
-- option_ranger: bool # exécute le déplacement, renommage, changement de mtime et mode
-- option_texte: bool # affiche le texte
+- self.cli_options.ranger: bool # exécute le déplacement, renommage, changement de mtime et mode
+- options.texte: bool # affiche le texte
 - base: Path # argument ou Classeur.NOM_BASE, répertoire racine des classeurs
 - classeur: Optional[Classeur] # parent du chemin ou None ou premier classeur identifié depuis base
 - config: dict = self.classeur.config if self.classeur else {}
 - config_ok: bool = True if self.config else False
-- option_module: str # argument ou self.config.get('module', None). ??? simple
+- options.extractor: str # argument ou self.config.get('module', None). ??? simple
 - pages:int = self.config.get('pages', 2)
 - texte: str = self.extraire_texte(), toujours extraire_texte_swift() si texte est vide
 - identification_ok: bool = self.verifier_identification() if self.texte else False
@@ -546,7 +552,7 @@ document.__init__()
         
 option_base dossier: définit la base des classeurs
 option_log niveau: définit la verbosité des logs
-option_module: module d'extraction ('mac' pour les images), easyocr s'il faut vraiment
+options.extractor: module d'extraction ('mac' pour les images), easyocr s'il faut vraiment
 
 logger.error(f"𐄂 ...)
 logger.info(f"✓ ...)
