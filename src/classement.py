@@ -3,31 +3,37 @@
 import click
 import locale
 import logging
+import sys
+from dataclasses import dataclass
 from document import Document
+from logging_config import setup_logging_from_cli
+
+@dataclass(frozen=True)
+class CliConfig:
+    source: str = None
+    log: str = "none"
+    base: str = None
+    extractor: str = "simple"
+    ranger: bool = False
+    texte: bool = False
 
 
-# root logger haut → bibliothèques tierces silencieuses
-logging.basicConfig(level=logging.WARNING)
-
-# handler et logger pour ton application
-handler = logging.StreamHandler()
 logger = logging.getLogger(__name__)
-logger.addHandler(handler)
 
 @click.command()
 @click.argument("source", type=click.Path(exists=True))
 @click.option("-l", "--log", type=click.Choice(["info", "warn", "error", "debug", "none"],
-        case_sensitive=False), default="INFO", show_default=True, help="Niveau de journalisation.")
-@click.option("-b", "--base", type=click.Path(), default=None, help="Dossier de base des classeurs.")
+        case_sensitive=False), default="none", show_default=True, help="Niveau de journalisation.")
+@click.option("-b", "--base", type=click.Path(), help="Dossier de base des classeurs.")
 @click.option("-m", "--module", type=click.Choice(["mac", "simple", "tolerant"],
-        case_sensitive=False), default=None, show_default=True, help="Choix du module d'extraction")
+        case_sensitive=False), show_default=True, help="Choix du module d'extraction")
 @click.option("-r", "--ranger", is_flag=True, help="Range le(s) document(s) dans le classeur.")
 @click.option("-t", "--texte", is_flag=True, help="Affiche le texte extrait.")
 def classement(source, log, base, module, ranger, texte):
     """Classement des fichiers à partir de SOURCE."""
     initialise_logging(log)
-    logger.debug(f"arguments: source:{source} - base:{base} - module:{module} - range:{ranger} - texte:{texte}")
-
+    cli_config = CliConfig(source, log, base, module, ranger, texte)
+    logger.debug(cli_config)
     document = Document(source, base, module, ranger, texte)
 
     # on a soit un document…
@@ -54,17 +60,10 @@ def classement(source, log, base, module, ranger, texte):
 
 
 def initialise_logging(log):
-    niveau = ({"info": logging.INFO, "warn": logging.WARNING, "error": logging.ERROR,
-               "debug": logging.DEBUG, "none": None}
-              .get(log, logging.WARNING))
-    if niveau:
-        handler.setLevel(niveau)
-        logger.setLevel(niveau)
-        logging.getLogger("classeur").setLevel(niveau)
-        logging.getLogger("document").setLevel(niveau)
-    else:
-        logging.disable()
-
+    setup_logging_from_cli(
+        log,
+        module_levels={"classeur": log, "document": log}
+    )
 
 if __name__ == "__main__":
     locale.setlocale(locale.LC_TIME, 'fr_CH.UTF-8')

@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4d587c7e-c09d-42d0-b0e1-f880e8bdc5ef" name="Changes" comment="Description du projet fait par mistral-vibe">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/document.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/document.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_pdf2image.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_torch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vision.readme" beforeDir="false" afterPath="$PROJECT_DIR$/vision.readme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classement.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/classement.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
