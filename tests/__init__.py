@@ -1,1 +1,1 @@
-"""Tests for appl.classeur project."""
+# Tests pour l'application classeur
