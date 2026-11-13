@@ -1,297 +1,303 @@
-from pathlib import Path
-from classeur import Classeur
-from cli_options import CliOptions
+#!/usr/bin/env python3
+"""Module représentant un document PDF à classifier."""
+
 import logging
-import pdfplumber
-from pdf2image import convert_from_path
-import re
-from datetime import datetime
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional
+import unicodedata
+from datetime import datetime
+from classeur import Classeur
+import re
 import os
 import subprocess
-import easyocr
-import unicodedata
-
+import urllib.request
+import urllib.error
+import json
 
 logger = logging.getLogger(__name__)
 
+MODE: int = 0o100400  # 'r--------'
+SWIFTOCR = "/Users/yogi/Docker/appl.classeur/swiftocr"
 
+def is_running_in_docker():
+    # Vérifie l'existence du fichier .dockerenv ou la présence de 'docker' dans cgroup
+    return Path('/.dockerenv').exists() or os.path.exists('/.dockerinit')
+
+if is_running_in_docker():
+    SWIFTOCR_URL = "http://host.docker.internal:8765/ocr"
+else:
+    SWIFTOCR_URL = "http://localhost:8765/ocr"
+
+@dataclass
 class Document:
-    SWIFTOCR = "/Users/yogi/Docker/appl.classeur/swiftocr"
-    MODE: int = 0o100400  # 'r--------'
-    DOCUMENT_PATTERN = "[a-z|A-Z|0-9]*.pdf"
+    """Classe représentant un document PDF.
+    
+    Attributes:
+        path: Chemin absolu vers le fichier PDF
+        name: Nom du fichier (sans extension)
+        extension: Extension du fichier
+        pages: nombre minimal de pages à extraire
+        mode: permissions du fichier
+        classeur_ok: document placé dans le bon dossier (classeur)
+        nom_fichier: Nom du fichier selon la consigne de la configuration
+        nom_fichier_ok: le nom du fichier correspond à la consigne
+    """
+    path: Path
+    name: Optional[str] = None
+    extension: Optional[str] = None
+    extracteur: Optional[str] = None
+    pages: Optional[int] = None
+    texte: Optional[str] = None
+    pattern_values: Optional[dict[str, str]] = None
+    patterns_ok: bool = False
+    nom_fichier: Optional[str] = None
+    nom_fichier_ok: bool = False
+    timestamp_fichier_ok: bool = False
+    permission_fichier_ok: bool = False
+    classeur_ok: bool = False
 
-    # def __init__(self, fichier, options.base, options.extractor, self.cli_options.ranger=False, options.texte=False):
-    def __init__(self, chemin_fichier: Path, options: CliOptions):
-        logger.debug(f"__init__: {chemin_fichier} - extracteur: {options.extractor} - ranger: {options.ranger} "
-                     f"- texte: {options.texte}")
-        self.chemin: Path = chemin_fichier  # le fichier existe, vérifié dans lister_fichiers
-        self.cli_options: CliOptions = options
+    # sauvegardes
+    texte_simple: str = ''
+    texte_tolerant: str = ''
+    texte_mac: str = ''
+
+    def __post_init__(self):
+        """Initialisation après la création de l'instance."""
+        if isinstance(self.path, str):
+            self.path = Path(self.path)
+        self.path = self.path.resolve()
+        if self.name is None:
+            self.name = self.path.stem
+        nfc = unicodedata.normalize('NFC', self.name or '')
+        if nfc != self.name:
+            logger.warning("le nom du fichier n'est pas au format unicode NFC")
+        if self.extension is None:
+            self.extension = self.path.suffix.lower()
         # obtenir l'heure de modification (mtime) du fichier
-        self.mtime: datetime = datetime.fromtimestamp(self.chemin.stat().st_mtime)
+        self.mtime: datetime = datetime.fromtimestamp(self.path.stat().st_mtime)
         # obtenir le type de fichier et ses permissions
-        self.mode: int = self.chemin.stat().st_mode
-        # classeur, si dossier avec fichier de configuration existe
-        # s'il n'existe pas ou l'identification échoue, cherche le classeur qui correspond
-        base_nfc = unicodedata.normalize('NFC', str(Path(options.base).resolve())) if options.base else None
-        self.base: Path = Path(base_nfc) if base_nfc else Classeur.NOM_BASE
-        self.classeur: Optional[Classeur] = Classeur(self.chemin.parent, option_base=False)
-        self.config: dict = self.classeur.config if self.classeur else {}
-        self.config_ok: bool = True if self.config else False
-        self.extractor: str = options.extractor if options.extractor else self.config.get('module', None)
-        self.pages: int = self.config.get('pages', 2)
-        self.texte: str = self.extraire_texte()
-        self.identification_ok: bool = self.verifier_identification() if self.texte else False
-        # résultat de la recherche de patterns, résultat dans les values
-        self.patterns_ok: bool = self.verifier_patterns() if self.identification_ok else False
-        # résultat de la vérification du nom de fichier comparé à la config
-        self.chemin_document: Optional[Path] = None
-        self.nom_fichier_ok: bool = self.traitement_nom_fichier() if self.patterns_ok else False
-        # résultat de la vérification de la date de modification du fichier, comparé à la config
-        self.timestamp_fichier_ok: bool = self.traitement_date_fichier() if self.patterns_ok else False
-        # résultat de la vérification des permissions du fichier
-        self.permission_fichier_ok: bool = self.traitement_permissions_fichier() if self.nom_fichier_ok else False
-        # résultat du placement de document (si tout est ok)
-        self.classement_ok: bool = self.nom_fichier_ok and self.timestamp_fichier_ok and self.permission_fichier_ok
+        self.mode: int = self.path.stat().st_mode
 
-        self.log_all()
-        if not options.texte:
-            self.resumer()
+    @staticmethod
+    def convertir_date(date_str: str) -> Optional[datetime]:
+        # conversion de date en texte en date objet
+        if date_str is '':
+            logger.error("il manque une valeur pour le traitement de la date")
+            return None
+
+        # Dictionnaire de conversion des mois en minuscules
+        # pour convertir en numéro du mois (index)
+        table_mois = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre',
+                      'novembre', 'décembre']
+        date_sub = date_str
+        for index, mois in enumerate(table_mois):
+            date_sub = re.sub(f" {mois} ", f".{index + 1}.", date_str, count=1, flags=re.IGNORECASE)
+            if date_sub != date_str:
+                logger.info(f"transformation date: {date_str} -> {date_sub}")
+                break
+
+        formats = ["%d.%m.%y", "%d.%m.%Y", "%d.%m.%Y %H:%M:%S", "%d %b %Y"]
+        for fmt in formats:
+            try:
+                date_obj = datetime.strptime(date_sub, fmt)
+                logger.debug(f"conversion date: {date_sub} -> {date_obj}")
+                return date_obj
+            except ValueError:
+                continue
+
+        logger.error(f"format de date non reconnu: {date_str}")
+        return None
 
     @classmethod
-    def lister_fichiers(cls, options: CliOptions) -> list[Path]:
-        source_path: Path = Path(options.source)
-        fichier_nfc = unicodedata.normalize('NFC', str(source_path.resolve()))
+    def from_path(cls, path: str) -> 'Document':
+        """Crée un Document à partir d'un chemin.
+        
+        Args:
+            path: Chemin vers le fichier PDF
+            
+        Returns:
+            Instance de Document
+            
+        Raises:
+            ValueError: Si le fichier n'existe pas ou n'est pas un PDF
+        """
+        path_obj = Path(path).resolve()
+        
+        if not path_obj.exists():
+            raise ValueError(f"Le fichier n'existe pas: {path_obj}")
+        
+        if not path_obj.is_file():
+            raise ValueError(f"Le chemin n'est pas un fichier: {path_obj}")
+        
+        if path_obj.suffix.lower() != '.pdf':
+            raise ValueError(f"Le fichier n'est pas un PDF: {path_obj}")
+        
+        logger.debug(f"document créé: {path_obj}")
+        return cls(path_obj)
 
-        if source_path.is_file():
-            if source_path.suffix == '.pdf':
-                logger.info(f"liste avec 1 fichier pdf")
-                return [Path(fichier_nfc)]
-            else:
-                logger.error(f"liste vide, le fichier '{options.source}' n'est pas PDF")
-                return []
-        if source_path.is_dir():
-            liste = []
-            for fichier_path in source_path.rglob(Document.DOCUMENT_PATTERN):
-                fichier_nfc = unicodedata.normalize('NFC', str(fichier_path.resolve()))
-                liste.append(Path(fichier_nfc))
-            if liste:
-                logger.info(f"liste avec {len(liste)} fichier(s) pdf")
-                return liste
-            else:
-                logger.error(f"liste vide, pas trouvé de fichier pdf dans '{options.source}'")
-                return []
-
-        logger.error(f"liste vide, type de fichier non traité '{options.source}'")
-        return []
-
-    def log_all(self):
-        logger.info(f"chemin: {self.chemin}")
-        logger.info(f"mtime: {self.mtime}")
-        logger.info(f"mode: {self.mode}")
-        logger.info(f"options.extractor: {self.extractor}")
-        logger.info(f"base: {self.base}")
-        logger.info(f"classeur: {self.classeur}")
-        logger.info(f"config: {self.config}")
-        logger.info(f"module: '{self.extractor}'")
-        logger.info(f"pages: '{self.pages}'")
-        logger.info(f"texte: '{self.texte:.150s}'")
-        logger.info(f"identification: {self.config.get('identification', [])}")
-        logger.info(f"identification_ok: {self.identification_ok}")
-        logger.info(f"patterns: {self.config.get('patterns', {})}")
-        logger.info(f"patterns_ok: {self.patterns_ok}")
-        logger.info(f"values: {self.config.get('values', {})}")
-        logger.info(f"chemin_document: '{self.chemin_document}'")
-        logger.info(f"nom_fichier_ok: {self.nom_fichier_ok}")
-        logger.info(f"timestamp_fichier_ok: {self.timestamp_fichier_ok}")
-        logger.info(f"permission_fichier_ok: {self.permission_fichier_ok}")
-        logger.info(f"ranger: {self.cli_options.ranger}")
-        logger.info(f"classement_ok: {self.classement_ok}\n")
-
-    def extraire_texte(self) -> str:
-        """extrait le texte du document pdf
+    def extract_text(self, classeur: Classeur) -> Optional[str]:
+        """extrait le texte du document pdf avec swiftocr ou pdfplumer
         - vérification du suffixe .pdf
-        - extraction de text standard (nombre de pages en fonction de config['pages'], par défaut 1)
-        - si pas de texte (self.texte vide) et option_ocr, extraction de texte via ocr
+        - si extracteur est simple ou tolerant: extraire avec pdfplumer
+        -   si texte, retourne texte
+        -  extracteur is None ou mac, ou pas de texte avec pdfplumber: extraire avec swiftocr
+
+        Returns:
+            Texte extrait du PDF, ou None en cas d'erreur
         """
 
-        if self.chemin.suffix != '.pdf':
-            logger.error(f"Fichier non PDF")
-            return ''
+        if self.extension != '.pdf':
+            logger.error("le fichier n'est pas un PDF")
+            return None
+        logger.debug("extraction de texte: vérifier les sauvegardes")
+        # mettre les valeurs par défaut si elles n'ont pas été spécifiées en argument
+        if self.pages is None:
+            self.pages = classeur.config.pages or 2  # valeur du classeur ou par défaut
+        if self.extracteur is None:
+            self.extracteur = classeur.config.extracteur or "mac"  # valeur du classeur ou par défaut
+        # vérifier les sauvegardes
+        if self.extracteur == 'simple' and self.texte_simple:
+            logger.debug("reprise de la sauvegarde texte_simple")
+            self.texte = self.texte_simple
+        if self.extracteur == 'tolerant' and self.texte_tolerant:
+            logger.debug("reprise de la sauvegarde texte_tolerant")
+            self.texte = self.texte_tolerant
+        if self.extracteur == 'mac' and self.texte_mac:
+            logger.debug("reprise de la sauvegarde texte_mac")
+            self.texte = self.texte_mac
+        if self.texte:
+            return self.texte
 
-        if self.extractor is None or self.extractor == "mac":
-            texte = self.extraire_texte_swift()
-            self.extractor = "mac"
-        else:
-            texte = self.extraire_texte_pdf()
-            if not texte:
-                logger.info(f"Aucun texte extrait avec '{self.extractor}' -> essai avec 'mac'")
-                texte = self.extraire_texte_swift()
+        logger.debug(f"extraction de texte ({self.pages} page(s)) avec la méthode {self.extracteur}")
+        texte:Optional[str] = None
+        if self.extracteur == 'simple' or self.extracteur == "tolerant":
+            texte = self.extract_text_pdf()
+            if texte:
+                if self.extracteur == "simple":
+                    self.texte_simple = texte
+                if self.extracteur == "tolerant":
+                    self.texte_tolerant = texte
+            else:
+                logger.info(f"aucun texte extrait avec '{self.extracteur}' -> essai avec 'mac'")
 
-        if texte == '':
-            logger.warning(f"Fichier sans texte, essaie un autre --module")
-            return ''
+        # si extracteur = 'mac' ou les autres méthodes n'ont rien donné (p. ex. image)
+        if texte is None:
+            texte = self.extract_text_swift()
+            if texte:
+                self.texte_mac = texte
+            else:
+                logger.warning(f"fichier sans texte avec la méthode {self.extracteur}, essayer un autre --extracteur")
+                return None
 
-        if texte:
-            # normaliser les espaces, saut de lignes, apostrophes
-            texte_normalise = ' '.join(texte.split()).replace("’", "'")
-            texte_nfc = unicodedata.normalize('NFC', texte_normalise) # !! problème découvert avec le ô de impôt
-            logger.debug(f"texte normalisé de {self.pages} page(s):\n{texte_nfc}")
-            logger.info(f"le texte a été extrait (affiché avec --log debug)")
-            return texte_nfc
+        # normaliser les espaces, saut de lignes, apostrophes
+        texte_normalise = ' '.join(texte.split()).replace("’", "'")
+        texte_nfc = unicodedata.normalize('NFC', texte_normalise)  # !! problème découvert avec le ô de impôt
+        logger.debug(f"texte normalisé de {self.pages} page(s):\n{texte_nfc}")
+        logger.info(f"le texte ({self.pages} page(s)) extrait avec la méthode {self.extracteur}"
+                    f" (affiché avec --log debug)")
+        self.texte = texte_nfc
+        if self.extracteur == "simple":
+            self.texte_simple = texte_nfc
+        if self.extracteur == "tolerant":
+            self.texte_tolerant = texte_nfc
+        if self.extracteur == "mac":
+            self.texte_mac = texte_nfc
 
-        logger.error(f"le texte n'a pas pu être extrait")
-        return ''
+        return texte_nfc
 
-    def extraire_texte_pdf(self):
-        """Extrait du texte des <nombre_pages> premières pages"""
-        logger.debug(f"extraire_texte_pdf : {self.chemin} - module: {self.extractor} - {self.pages} pages")
+    def extract_text_pdf(self) -> Optional[str]:
+        """Extrait le texte du PDF en mode simple ou tolerant avec pdfplumber.
+        Le nombre de pages extraites est limité par pages, argument cli ou configuration classeur
+        
+        Returns:
+            Texte extrait du PDF, ou None en cas d'erreur
+        """
         try:
-            with pdfplumber.open(self.chemin) as pdf:
-                texte_extrait = ""
+            import pdfplumber
+            with pdfplumber.open(self.path) as pdf:
+                texte_extrait = ''
                 for page in pdf.pages:
-                    if self.extractor == "simple":
+                    if self.extracteur == "simple":
                         texte_extrait += page.extract_text_simple()
-                    if self.extractor == "tolerant":
+                    if self.extracteur == "tolerant":
                     # pour les derniers pdf des extraits de compte de VZ qui comportent des espaces aléatoires:
                         texte_extrait += page.extract_text(
                             x_tolerance=4,  # tolérance horizontale pour grouper les caractères
                             y_tolerance=1,  # tolérance verticale
                             layout=True
                         )
-
                     if page.page_number == self.pages:
+                        logger.debug(f"seules {self.pages} / {len(pdf.pages)} page(s) ont été extraites")
                         break
+                if texte_extrait == '':
+                    return None
 
-                if texte_extrait:
-                    return texte_extrait
+            return texte_extrait
 
-                logger.warning(f"Aucun texte extrait de {self.chemin.name}")
-                return ''  # pas de texte
-
+        except ImportError:
+            raise ImportError("Le module pdfplumber n'est pas installé")
         except Exception as e:
-            logger.error(f"Erreur lecture avec pdfplumber {self.chemin.name}: {e}")
-            return ''
+            logger.error(f"erreur lors de l'extraction du texte: {e}")
+            return None
 
-    def extraire_texte_swift(self):
-        """Extrait le texte d'une image avec le programme swift sur MacOS."""
-        self.extractor = 'mac'
-        logger.debug(f"extraire_text_swift: {self.chemin} - {self.pages}")
+    def extract_text_swift(self) -> Optional[str]:
+        """Extrait le texte d'un fichier pdf avec le programme swift sur MacOS."""
+        self.extracteur = 'mac'
+        logger.debug(f"extraction swiftocr: {self.path} - {self.pages}")
+        stdout = ''
+        stderr = ''
+        code = 0
+        if Path(SWIFTOCR).exists():
+            logger.info(f"appel du programme {SWIFTOCR} ...")
+            result = subprocess.run(
+                [SWIFTOCR, str(self.path), "--lang", "fr-FR", "--pages", str(self.pages)],
+                capture_output=True,
+                text=True
+            )
+            stdout = result.stdout  # contenu de stdout (str)
+            stderr = result.stderr  # contenu de stderr (str)
+            code = result.returncode  # 0 = succès
+        else:
+            logger.error(f"le programme swiftocr n'existe pas: {SWIFTOCR}")
+            logger.info(f"essai du service ocr via api: {SWIFTOCR_URL} ...")
+            req_data:bytes = (json.dumps({"file": str(self.path), "lang": "fr-FR", "pages": str(self.pages)})
+                              .encode('utf-8'))
+            req = urllib.request.Request(url=SWIFTOCR_URL, data=req_data, method="POST")
 
-        result = subprocess.run(
-            [self.SWIFTOCR, str(self.chemin), "--lang", "fr-FR", "--pages", str(self.pages)],
-            capture_output=True,
-            text=True
-        )
-
-        stdout = result.stdout  # contenu de stdout (str)
-        stderr = result.stderr  # contenu de stderr (str)
-        code = result.returncode  # 0 = succès
+            try:
+                with urllib.request.urlopen(req) as result:
+                    if result.status == 200:
+                        result_data = result.read().decode()
+                        json_data = json.loads(result_data)
+                        code = json_data.get("returncode", 1)
+                        stdout = json_data.get("stdout", "")
+                        stderr = json_data.get("stderr", "")
+                    else:
+                        logger.error(f"statut de la requête: {result.status}")
+                        return None
+            except urllib.error.HTTPError as e:
+                if e.code == 403:
+                    logger.error(f"fichier non trouvé: {e}")
+                else:
+                    logger.error(f"une erreur est survenue: {e}")
+            except Exception as e:
+                logger.error(f"une erreur est survenue: {e}")
+                return None
 
         if code == 0:
             return stdout
         else:
-            logger.error(f"Erreur swiftocr {stderr}")
-            return ''
+            logger.error(f"erreur swiftocr: {stderr}")
+            return None
 
-    def extraire_texte_easyocr(self):
-        """Extrait le texte d'une image avec EasyOCR."""
-        logger.debug(f"extraire_pages_image: {self.chemin} - {self.pages}")
-        try:
-
-            # Initialiser le lecteur (français)
-            reader = easyocr.Reader(['fr'], gpu=True)
-
-            # Convertir le PDF en images (une image par page)
-            images = convert_from_path(self.chemin, fmt="jpeg")
-
-            # Extraire le texte de chaque page
-            textes = []
-            for i, image in enumerate(images):
-                logger.debug(f"Traitement page {i + 1}/{len(images)}...")
-
-                # OCR sur l'image
-                resultats = reader.readtext(image)
-
-                # Extraire le texte
-                texte_page = ' '.join([detection[1] for detection in resultats])
-                textes.append(texte_page)
-
-                # limiter le nombre de pages
-                if i + 1 == self.pages:
-                    logger.debug(f"limiter du nombre de pages {self.pages}")
-                    logger.debug(f"texte normalisé de {i + 1} sur {len(images)} images:\n{textes}")
-                    break
-
-        except Exception as e:
-            logger.error(f"Erreur lecture PDF avec easyocr {self.chemin.name}: {e}")
-            return ''
-
-        # Combiner toutes les pages
-        # self.texte = '\n\n'.join(textes)
-        return '\n\n'.join(textes)
-
-    def verifier_identification(self) -> bool:
-        # il faut du texte
-        if not self.texte:
-            logger.error(f"le document ne peut être identifié sans texte")
-            return False
-
-        # il faut les critères d'identification (fichier config d'un classeur)
-        # sinon on cherche sur tous les classeurs
-        self.identification_ok = False
-        if not self.classeur or not self.config:
-            Classeur(self.base, True)
-            nombre_classeurs = len(Classeur.LISTE_CLASSEUR)
-            logger.debug(f"recherche sur {nombre_classeurs} classeurs à partir de {self.base.name}")
-            for index in range(0, nombre_classeurs):
-                self.classeur = Classeur(Classeur.LISTE_CLASSEUR[index], False)
-                self.config = Classeur.LISTE_CONFIG[index]
-                logger.debug(f"classeur {index + 1}/{nombre_classeurs}: {self.config['description']}")
-                if self.verifier_identification():
-                    return True
-            if not self.identification_ok:
-                self.classeur = None
-                self.config = {}
-                return False
-
-        # vérifie si le texte du document contient chacun des critères d'identification
-        # le texte extrait contient par défaut 1 page. si la config l'exige, il faut en extraire plus
-        if self.config['pages'] > self.pages:
-            logger.debug(f"extraction de pages supplémentaires: {self.config['pages']} pages")
-            self.extraire_texte()
-
-        logger.debug(f"Identification classeur: {self.config.get('description', 'pas de description')}")
-        config_identification = self.config['identification']
-        logger.debug(f"Identification critères: {config_identification}")
-
-        nombre_elements = len(config_identification)
-        compteur = compteur_ok = 0
-        for identification in config_identification:
-            compteur += 1
-            match = re.search(identification, self.texte, re.IGNORECASE)
-            if match:
-                compteur_ok += 1
-                logger.debug(f"{compteur}/{nombre_elements} ✓ '{identification}' trouvé")
-            else:
-                logger.debug(f"{compteur}/{nombre_elements} 𐄂 '{identification}' pas trouvé")
-        if compteur_ok == nombre_elements:
-            logger.debug(f"le document est identifié avec {config_identification}")
-            self.identification_ok = True
-        else:
-            logger.debug(f"document non identifié avec {config_identification}")
-            self.identification_ok = False
-
-        return self.identification_ok
-
-    def verifier_patterns(self) -> bool:
+    def extract_pattern_values(self, classeur) -> bool:
         """Extrait les informations selon les définitions de la configuration
         (pattern) pour les ranger dans config.values
         """
-
         # les patterns définissent des informations à extraire du texte
-        logger.debug(f"Informations à extraire (patterns)")
-        patterns = self.config['patterns']
+        logger.debug("informations à extraire (patterns)")
+        patterns = classeur.get_patterns()
         values = {}  # liste des valeurs trouvées
         compteur = compteur_ok = 0
         nombre_id = len(patterns)
@@ -307,260 +313,171 @@ class Document:
                 logger.debug(f"{compteur}/{nombre_id} 𐄂 {pattern}: {patterns[pattern]} -> None")
 
         if compteur_ok == nombre_id:
-            logger.debug(f"toutes les informations ont été extraites")
+            logger.info(f"patterns: {['✓ '+v+': '+values[v] if values[v] else '𐄂 '+v for v in values]}")
             self.patterns_ok = True
         else:
-            logger.debug(f"il manque des informations: "
+            logger.error(f"il manque des informations: "
                          f"{['✓ '+v if values[v] else '𐄂 '+v for v in values]}")
             self.patterns_ok = False
 
-        self.config['values'] = values  # "values": {"pattern": "value", ...}
+        self.pattern_values = values  # "values": {"pattern": "value", ...}
         return self.patterns_ok
 
-    def traitement_nom_fichier(self) -> bool:
+    def check_nom_fichier(self, classeur) -> Optional[str]:
         # création du nom de fichier selon définition, liste d'éléments d'identification ou valeurs de patterns
         # (suffixe ? indique optionnel)
         # ex:   "nom_fichier": [["identification", 0], ["values","titre"], ["values","timestamp"], ["values","police?"]]
-        logger.debug(f"config nom de fichier: {self.config['nom_fichier']}")
-        if self.config.get('values', None) is None:
-            logger.error(f"config/values n'existe pas")
-            return False
+        pattern_fichier = classeur.get_nom_fichier()
+        logger.debug(f"modèle du nom de fichier: {pattern_fichier}")
+        if self.pattern_values is None:
+            logger.error("il n'y a pas de valeur de pattern")
+            return None
         nom_fichier = ""
-        for element in self.config['nom_fichier']:
-            logger.debug(f"- partie: {element}")
-            if self.config.get(element[0], None) is None:
-                logger.error(f"config/{element[0]} n'existe pas")
-                continue
-            if element[0] == "values" and element[1].endswith('?'):  # element optionnel pour le nom de fichier
-                partie = self.config[element[0]][element[1].rstrip('?')]
-                nom_fichier += ' ' + partie if partie else nom_fichier
+        config = classeur.get_config()
+        for element in pattern_fichier:
+            logger.debug(f"partie: {element}")
+            if element[0] == "values":
+                if element[1].endswith('?'):  # element optionnel pour le nom de fichier
+                    partie = self.pattern_values[element[1].rstrip('?')]
+                    nom_fichier += ' ' + partie if partie else nom_fichier
+                    logger.debug(f"{element[1]}: {partie} - nom_fichier: {nom_fichier}")
+                else:
+                    partie = self.pattern_values[element[1]]
+                    if partie is None:
+                        logger.error(f"'{element[0]}.{element[1]}' est un élément obligatoire pour le nom de fichier")
+                        break
+                    nom_fichier = nom_fichier + ' ' + partie
+                    logger.debug(f"{element[1]}: {partie} - nom_fichier: {nom_fichier}")
             else:
-                partie = self.config[element[0]][element[1]]
+                partie = config[element[0]][element[1]]
                 if partie is None:
                     logger.error(f"'{element[0]}.{element[1]}' est un élément obligatoire pour le nom de fichier")
                     nom_fichier = ""
                     break
                 nom_fichier = nom_fichier + ' ' + partie
-            logger.debug(f"> nom de fichier: {nom_fichier}")
+                logger.debug(f"{element[1]}: {partie} - nom_fichier: {nom_fichier}")
 
         if nom_fichier != "":
-            # remplacements de texte
-            config_transform = self.config.get('transform', [])
+            # remplacements de texte. exemple:
+            # "transform": {
+            #     "667.240.58.500": "(placements)",
+            #     "667.238.47.500": "(pilier_3a)"
+            # }
+            config_transform:dict = classeur.get_transform()
+            logger.debug(f"transformations: {config_transform}")
             for texte_avant in config_transform:
-                logger.debug(f"- transformation: {config_transform}")
                 texte_apres = config_transform[texte_avant]
+                logger.debug(f"transformation: {texte_avant} -> {texte_apres}")
                 nom_avant = nom_fichier
-                nom_fichier = nom_fichier.replace(texte_avant, texte_apres)
+                nom_fichier = nom_avant.replace(texte_avant, texte_apres)
                 if nom_avant != nom_fichier:  # replacement a eu lieu
-                    logger.info(f"remplacement '{texte_avant}' par '{texte_apres}'")
+                    logger.info(f"remplacement de '{texte_avant}' par '{texte_apres}'")
 
             # Remplacer les caractères interdits et limite la longueur
             nom_fichier = re.sub(r'[<>:"/\\|?*]', '_', nom_fichier)
             nom_fichier = unicodedata.normalize('NFC', nom_fichier[:100].strip() + '.pdf')
 
-            self.config["values"]["nom_fichier"] = nom_fichier
-            logger.info(f"nom du fichier selon config: '{nom_fichier}'")
-
-        # chemin du document classé et nommé correctement
-        self.chemin_document = self.classeur.chemin_classeur / nom_fichier
-        if self.chemin == self.chemin_document:
-            logger.info(f"nom_fichier_ok - base: {Classeur.NOM_BASE} "
-                        f"/ classeur: {self.classeur.chemin_court} "
-                        f"/ nom_fichier: {nom_fichier}")
-            self.nom_fichier_ok = True
-            return True
-
-        if not self.cli_options.ranger:
-            logger.error(f"le fichier doit être rangé: "
-                         f"'{self.chemin}' -> '{self.classeur.chemin_court}/{nom_fichier}'")
-            self.nom_fichier_ok = False
-            return False
-
-        # option ranger: déplace / renomme le fichier
-        # si le nouveau nom existe déjà, il ne faut pas l'écraser et créer un nouveau nom avec un suffixe
-        if self.chemin_document.exists():
-            # ajoute un timestamp avant le suffixe
-            nouveau_nom_avec_timestamp = self.chemin_document.name.replace(
-                self.chemin_document.suffix, '_' + datetime.now().isoformat() + self.chemin_document.suffix)
-            self.chemin_document = self.chemin_document.parent / nouveau_nom_avec_timestamp
-            logger.warning(f"DOUBLON: renomme fichier -> {nouveau_nom_avec_timestamp}")
-
-        # renomme et déplace de le fichier
-        self.chemin = self.chemin.rename(self.chemin_document)
-        print(f"ℹ️ document classé '{self.chemin}' -> '{self.chemin_document}'")
-        self.nom_fichier_ok = True
-        # touch CONFIG_FILE pour avoir ce fichier en-haut de la liste
-        atime = mtime = datetime.now().timestamp()
-        os.utime(self.classeur.chemin_config, (atime, mtime))
-        return True
-
-    @staticmethod
-    def convertir_date(date_str: str) -> Optional[datetime]:
-        # conversion de date en texte en date objet
-        if date_str is None:
-            logger.error(f"il manque une valeur pour la traitement de date")
-            return None
-
-        # Dictionnaire de conversion des mois en minuscules
-        # pour convertir en numéro du mois (index)
-        table_mois = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre',
-                      'novembre', 'décembre']
-        date_sub = date_str
-        for index, mois in enumerate(table_mois):
-            date_sub = re.sub(f" {mois} ", f".{index + 1}.", date_str, count=1, flags=re.IGNORECASE)
-            if date_sub != date_str:
-                logger.info(f"transformation date: {date_str} -> {date_sub}")
-                break
-
-        formats = ["%d.%m.%y", "%d.%m.%Y", "%d.%m.%Y %H:%M:%S"]
-        for fmt in formats:
-            try:
-                date_obj = datetime.strptime(date_sub, fmt)
-                logger.info(f"conversion date: {date_sub} -> {date_obj}")
-                return date_obj
-            except ValueError:
-                continue
-
-        logger.error(f"Format de date non reconnu : {date_str}")
+            logger.info(f"nom du fichier selon la configuration: '{nom_fichier}'")
+            return nom_fichier
         return None
 
-    def traitement_date_fichier(self) -> bool:
-        if self.config.get('values', None) is None:
-            logger.error(f"config/values n'existe pas")
+    def check_classeur(self, classeur) -> bool:
+        self.classeur_ok = (self.path.parent == classeur.path)
+        return self.classeur_ok
+
+    def check_timestamp(self) -> bool:
+        if not self.pattern_values:
+            logger.error("la clé 'values' n'existe pas")
             return False
+        date_fichier = self.pattern_values.get('timestamp', None)
+        if not date_fichier:
+            logger.error("la clé 'values/timestamp' n'existe pas")
+            return False
+
         # formatage du timestamp
-        date_fichier = self.config['values'].get('timestamp', None)
         date_obj = self.convertir_date(date_fichier)
 
         if self.mtime == date_obj:
-            logger.info(f"La date de modification du fichier est correcte: {self.mtime}")
+            logger.info(f"la date de modification du fichier est correcte: {self.mtime}")
             self.timestamp_fichier_ok = True
-            return True
         else:
             logger.error(f"le fichier n'a pas la date de modification correcte: {self.mtime}")
             self.timestamp_fichier_ok = False
-            if not self.cli_options.ranger:
-                return False
+        return self.timestamp_fichier_ok
+
+    def check_permissions(self) -> bool:
+        # chercher permissions
+        if self.mode == MODE:  # 'r--------'
+            logger.info("les permissions du fichier sont correctes: 'r--------'")
+            self.permission_fichier_ok = True
+        else:
+            logger.error(f"les permissions du fichier sont fausses: {oct(self.mode)}")
+            self.permission_fichier_ok = False
+
+        return self.permission_fichier_ok
+
+    def classement(self, classeur: Classeur) -> bool:
+        # patterns
+        pattern_ok = self.extract_pattern_values(classeur)
+        if pattern_ok:
+            self.nom_fichier = self.check_nom_fichier(classeur)
+            self.nom_fichier_ok:bool = (self.path.name == self.nom_fichier)
+
+        # path document ? path classeur
+        self.check_classeur(classeur)
+
+        # chercher timestamp
+        timestamp_fichier_ok = self.check_timestamp()
+
+        # chercher permissions
+        permissions_ok = self.check_permissions()
+
+        if self.nom_fichier_ok and timestamp_fichier_ok and permissions_ok:
+            return True
+
+        return False
+
+    def ranger(self, classeur: Classeur) -> bool:
+        # formatage du timestamp
+        date_fichier = self.pattern_values.get('timestamp', None)
+        date_obj = self.convertir_date(date_fichier)
 
         # option ranger: modifie le timestamp
         atime = mtime = date_obj.timestamp()
-        os.utime(self.chemin_document, (atime, mtime))
-        # modifier ou pas ?? self.mtime = datetime.fromtimestamp(self.chemin.stat().st_mtime)
-        print(f"📅 date de modification appliquée -> {date_obj.strftime('%d.%m.%Y')}")
+        os.utime(self.path, (atime, mtime))
+        # self.mtime n'est pas modifié et garde le timestamp original
+        print(f"  📅 Date de modification appliquée -> {date_obj.strftime('%d.%m.%Y')}")
         self.timestamp_fichier_ok = True
-        return True
-
-    def traitement_permissions_fichier(self) -> bool:
-        self.mode = self.chemin.stat().st_mode  # type de fichier et permissions
-        if self.mode == Document.MODE:  # 'r--------'
-            logger.info(f"Les permissions du fichier sont correctes: 'r--------'")
-            self.permission_fichier_ok = True
-            return True
-        else:
-            logger.error(f"Les permissions du fichier sont fausses.")
-            self.permission_fichier_ok = False
-            if not self.cli_options.ranger:
-                return False
 
         # option ranger: modifie les permissions
-        self.chemin_document.chmod(Document.MODE)
+        self.path.chmod(MODE)
         self.permission_fichier_ok = True
-        print(f"ℹ️ permission changée en lecture seule -> 'r--------'")
+        print("  ℹ️ Permission changée en lecture seule -> 'r--------'")
         # masque l'extension du fichier (Unexpected Error. (-5000) doit être writable)
         # subprocess.run(["SetFile", "-a", "E", str( self.chemin_document)], check=True)
         # logger.info(f"L'extension du fichier est masquée")
+
+        # option ranger: déplace / renomme le fichier
+        # si le nouveau nom existe déjà, il ne faut pas l'écraser et créer un nouveau nom avec un suffixe
+        nouveau_chemin: Path = classeur.path / self.nom_fichier
+        if nouveau_chemin.exists():
+            # ajoute un timestamp avant le suffixe
+            nouveau_nom_avec_timestamp:str = self.nom_fichier.replace('.pdf', '_' + datetime.now().isoformat() + '.pdf')
+            nouveau_chemin = classeur.path / nouveau_nom_avec_timestamp
+            logger.warning(f"doublon: renommage du fichier -> {nouveau_nom_avec_timestamp}")
+
+        # renomme et déplace de le fichier
+        self.path = self.path.rename(nouveau_chemin)
+        print(f"  ℹ️ Document classé -> '{self.path}'")
+
+        # touch CONFIG_FILE pour avoir ce fichier en-haut de la liste
+        atime = mtime = datetime.now().timestamp()
+        os.utime(classeur.get_config_path(), (atime, mtime))
+
         return True
 
-    def resumer(self):
-        """Affiche l'état des vérifications"""
-        print(f"\nTraitement du fichier '{self.chemin}':")
-        if self.config_ok:
-            print(f"✅ configuration de classeur présente: {self.config['description']}")
-        else:
-            print(f"❌ configuration manquante dans le classeur '{self.chemin.parent.name}'")
-        if self.texte:
-            print(f"✅ texte extrait avec module '{self.extractor}' "
-                  f"({'config' if self.config.get('module') == self.extractor else 'argument'}), "
-                  f"{self.pages} page(s)")
-        else:
-            print(f"❌ il n'y a pas de texte extrait avec module '{self.extractor}',"
-                  f" essaie un autre module ('mac', 'simple', 'tolerant')")
-            return
-
-        if self.identification_ok:
-            print(f"✅ le document est identifié avec les critères {self.config['identification']}")
-            if not self.config_ok:
-                print(f"📂 classeur '{self.classeur.chemin_classeur.name}' -> '{self.config['description']}'")
-        else:
-            print(f"❌ il manque des éléments d'identification {self.config.get('identification')}")
-        if self.patterns_ok:
-            print(f"✅ tous les pattern sont trouvés: {self.config['values']}")
-        else:
-            patterns = self.config.get('patterns',{})
-            print(f"❌ il manque des pattern: "
-                  f"{['✓ ' + p if self.config.get('values',{}).get(p) else '𐄂 ' + p for p in patterns]}"
-            )
-        nom_fichier = self.config.get("values", {}).get("nom_fichier")
-        if self.nom_fichier_ok:
-            print(f"✅ le nom du fichier est correct: '{nom_fichier}'")
-            if self.chemin_document.name != nom_fichier:
-                print(f"❗️ DOUBLON: -> {self.chemin_document.name}")
-        else:
-            print(f"❌ le nom du fichier ne correspond pas à '{nom_fichier}'")
-        date_fichier = self.config.get("values", {}).get("timestamp")
-        if self.timestamp_fichier_ok:
-            print(f"✅ la date du fichier est correcte: {date_fichier}")
-        else:
-            print(f"❌ la date du fichier ne correspond pas à {date_fichier}")
-        if self.permission_fichier_ok:
-            print(f"✅ le fichier est verrouillé (permission en lecture seule)")
-        else:
-            print(f"❌ le fichier n'est pas verrouillé")
-        if self.classement_ok:
-            print(f"✅ le fichier est classé dans le bon classeur '{self.classeur.chemin_classeur.name}'")
-        else:
-            print(f"❌ le fichier n'est pas classé dans le bon classeur")
-        if not self.cli_options.ranger and self.identification_ok and self.patterns_ok:
-            print(f"⚠️ active l'option 'ranger' pour classer le document")
-
-
-"""
-document.__new__()
-- chemin.isFile -> Document
-- chemin.isDir -> List [str]
-document.__init__()
-- chemin: Path = Path du fichier source en NFC, le fichier existe, vérifié dans __new__
-- mtime: datetime # Obtenir l'heure de modification (mtime) du fichier
-- mode: int # type de fichier et permissions
-- self.cli_options.ranger: bool # exécute le déplacement, renommage, changement de mtime et mode
-- options.texte: bool # affiche le texte
-- base: Path # argument ou Classeur.NOM_BASE, répertoire racine des classeurs
-- classeur: Optional[Classeur] # parent du chemin ou None ou premier classeur identifié depuis base
-- config: dict = self.classeur.config if self.classeur else {}
-- config_ok: bool = True if self.config else False
-- options.extractor: str # argument ou self.config.get('module', None). ??? simple
-- pages:int = self.config.get('pages', 2)
-- texte: str = self.extraire_texte(), toujours extraire_texte_swift() si texte est vide
-- identification_ok: bool = self.verifier_identification() if self.texte else False
-- patterns_ok: bool # résultat de la recherche de patterns, résultat dans les values if self.identification_ok else False
-- chemin_document: Optional[Path] # chemin complet selon config if self.patterns_ok else False
-- ??? chemin_ok: bool # si placement das le classeur est correct if self.patterns_ok else False
-- nom_fichier_ok: bool # résultat de la vérification du nom de fichier comparé à la config
-- timestamp_fichier_ok: bool # résultat de la vérification de la date de modification du fichier, comparé à la config
-- permission_fichier_ok: bool # résultat de la vérification des permissions du fichier if self.nom_fichier_ok else False
-- classement_ok: bool # résultat du placement de document (si tout est ok)
-        
-option_base dossier: définit la base des classeurs
-option_log niveau: définit la verbosité des logs
-options.extractor: module d'extraction ('mac' pour les images), easyocr s'il faut vraiment
-
-logger.error(f"𐄂 ...)
-logger.info(f"✓ ...)
-logger.warning(f"⚠ ...)
-
-print(f"✅...) 
-print(f"❌...)
-print(f"⚠️...)
-print(f"ℹ️...)
-
-"""
+    def __str__(self) -> str:
+        return f"Document({self.name}{self.extension})"
+    
+    def __repr__(self) -> str:
+        return f"Document(path='{self.path}', name='{self.name}', extension='{self.extension}')"

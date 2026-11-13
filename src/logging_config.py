@@ -1,5 +1,25 @@
 #!/usr/bin/env python3
-"""Configuration centralisée du logging pour l'application classeur."""
+"""Configuration centralisée du logging pour l'application classeur.
+
+Conventions de style des textes écrits par les scripts du projet:
+
+- tous les textes sont en français
+- messages de logging (logger.debug/info/warning/error):
+  * initiale en minuscule
+  * pas de point final, pas de point d'exclamation
+  * pas d'espace avant le deux-points (ex: "classeur trouvé: {path}")
+  * pas de préfixe de nom de fonction ni de tiret en tête de message
+  * f-string uniquement si le message contient une interpolation
+  * symboles ✓ / 𐄂 pour marquer les vérifications réussies / échouées
+- sorties CLI (print), visibles par l'utilisateur:
+  * initiale en majuscule (après l'émoji s'il y en a un)
+  * émoji de statut en tête: 🗂️ document, ✅ succès, ❌ échec,
+    ℹ️ information, ⚠️ erreur non fatale, 📅 date appliquée
+  * indentation de deux espaces pour les lignes sous un en-tête
+  * pas de point final
+- messages des exceptions levées (raise ... Error):
+  * initiale en majuscule, même format que les sorties CLI
+"""
 
 import logging
 import sys
@@ -78,6 +98,7 @@ def setup_logging(
             module_logger.setLevel(module_level)
 
     logging.getLogger("pdfplumber").setLevel(logging.WARNING)
+    logging.getLogger("pdfminer").setLevel(logging.WARNING)
     logging.getLogger("pdf2image").setLevel(logging.WARNING)
     logging.getLogger("PIL").setLevel(logging.WARNING)
     logging.getLogger("easyocr").setLevel(logging.WARNING)

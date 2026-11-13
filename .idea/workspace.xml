@@ -4,19 +4,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d587c7e-c09d-42d0-b0e1-f880e8bdc5ef" name="Changes" comment="Description du projet fait par mistral-vibe">
-      <change afterPath="$PROJECT_DIR$/src/cli_options.py" afterDir="false" />
+    <list default="true" id="75e45d19-539a-4dc0-aab5-8715b88b7a3f" name="Changes" comment="test subprocess">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/appl.classeur.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/appl.classeur.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scratch_pdf2image.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scratch_torch.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scratch_unicode.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classement.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/classement.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classeur.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/classeur.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cli_options.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/document.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/document.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_document.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_document.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/extraire_text.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logging_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/logging_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swiftocr_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/swiftocr_server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp.readme.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vision.readme" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vision.swift" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DBNavigator.Project.Workspace.Settings">
+    <assistant-settings>
+      <credential-settings>
+        <credentials />
+      </credential-settings>
+      <profile-settings>
+        <profiles />
+      </profile-settings>
+      <mcp-server-settings>
+        <workspace-integration value="false" />
+        <mcp-servers />
+        <mcp-tool-approvals />
+      </mcp-server-settings>
+    </assistant-settings>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -28,136 +57,135 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;jaihemme&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/jaihemme/appl.classeur.git&quot;,
-    &quot;accountId&quot;: &quot;95e08fe7-1ef1-4b3f-8911-b8f58ecc9ec3&quot;
-  }
-}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/classeur.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/document.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0000000000002822" />
+      <entry key="S60" value="1.000000919927635" />
+      <entry key="M2" value="1.0016612314784257" />
+      <entry key="M5" value="1.1530108513487163" />
+      <entry key="M10" value="2.0167652806627094" />
+      <entry key="M15" value="3.907325345907445" />
+      <entry key="M30" value="13.135146098743666" />
+      <entry key="H1" value="29.39738006262423" />
+      <entry key="H2" value="48.34556096295442" />
+      <entry key="H4" value="68.43511781454818" />
+      <entry key="D1" value="134.05864198001382" />
+      <entry key="W1" value="174.70750320158848" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="5.1074403330473015E-89" />
+      <entry key="S5" value="4.8226008760235775E-36" />
+      <entry key="S10" value="2.196042093408862E-18" />
+      <entry key="S30" value="1.2998110363229286E-6" />
+      <entry key="S60" value="0.0011400925560334698" />
+      <entry key="M2" value="0.03376525786731321" />
+      <entry key="M5" value="0.2583316266762388" />
+      <entry key="M10" value="0.5582554266630171" />
+      <entry key="M15" value="0.918383220591347" />
+      <entry key="M30" value="2.548033659509593" />
+      <entry key="H1" value="5.538314129719424" />
+      <entry key="H2" value="9.46055409688732" />
+      <entry key="H4" value="14.25007106082465" />
+      <entry key="D1" value="30.306788363273988" />
+      <entry key="W1" value="39.842913142888754" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.10294887715844663" />
+      <entry key="MS500" value="0.6346354430099024" />
+      <entry key="S2" value="0.8925469714729767" />
+      <entry key="S5" value="0.9555478337729125" />
+      <entry key="S10" value="0.9775212702406595" />
+      <entry key="S30" value="0.9924514753922298" />
+      <entry key="S60" value="0.9973328093772506" />
+      <entry key="M2" value="1.0331438777344615" />
+      <entry key="M5" value="1.409381997214686" />
+      <entry key="M10" value="2.573099532441819" />
+      <entry key="M15" value="4.823075240907206" />
+      <entry key="M30" value="15.677916038106622" />
+      <entry key="H1" value="34.92910715874662" />
+      <entry key="H2" value="57.79992694289233" />
+      <entry key="H4" value="82.68008877304608" />
+      <entry key="D1" value="164.3634534685795" />
+      <entry key="W1" value="214.5500424537082" />
+    </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
-  <component name="ProjectId" id="39hZAnpJoDhlycqfi1vTqYJn9ND" />
+  <component name="ProjectId" id="3Fl9nzV32YqTeFkIlopfKeWcbCq" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python tests.Python tests for tests.test_document.TestDocumentNew.test_new_with_directory.executor": "Run",
-    "Python tests.Python tests for tests.test_document.TestDocumentNew.test_new_with_nonexistent_file.executor": "Run",
-    "Python tests.Python tests for tests.test_document.TestDocumentNew.test_new_with_valid_pdf.executor": "Debug",
-    "Python tests.Python tests for tests.test_document.TestDocumentTextExtraction.executor": "Run",
-    "Python tests.Python tests for tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_error.executor": "Run",
-    "Python tests.Python tests for tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_mock.executor": "Run",
-    "Python tests.Python tests in test_classeur.py.executor": "Run",
-    "Python tests.Python tests in test_document.py.executor": "Run",
-    "Python tests.Python tests in tests.executor": "Debug",
-    "Python tests.pytest for test_document.TestDocumentIdentification.test_verifier_identification_success.executor": "Debug",
-    "Python tests.pytest for test_document.TestDocumentNew.test_new_with_nonexistent_file.executor": "Run",
-    "Python tests.pytest for test_document.TestDocumentPatterns.test_verifier_patterns_failure.executor": "Run",
-    "Python tests.pytest for test_document.TestDocumentTextNormalization.test_normalize_apostrophes.executor": "Run",
-    "Python tests.pytest for tests.test_classeur.TestClasseurAffiche.test_affiche_with_valid_config.executor": "Run",
-    "Python tests.pytest for tests.test_classeur.TestClasseurLoadConfig.test_load_config_missing_file.executor": "Debug",
-    "Python tests.pytest for tests.test_classeur.executor": "Run",
-    "Python tests.pytest for tests.test_document.TestDocumentDate.test_traitement_date_fichier_success.executor": "Run",
-    "Python tests.pytest for tests.test_document.TestDocumentNew.test_new_with_non_pdf_file.executor": "Debug",
-    "Python tests.pytest for tests.test_document.TestDocumentNomFichier.test_traitement_nom_fichier_success.executor": "Run",
-    "Python tests.pytest for tests.test_document.TestDocumentPermissions.executor": "Run",
-    "Python tests.pytest for tests.test_document.TestDocumentPermissions.test_traitement_permissions_fichier_readonly.executor": "Run",
-    "Python tests.pytest for tests.test_document.TestDocumentResumer.test_resumer_with_errors.executor": "Debug",
-    "Python tests.pytest for tests.test_document.TestDocumentTextNormalization.test_normalize_apostrophes.executor": "Run",
-    "Python tests.pytest for tests.test_document.executor": "Run",
-    "Python.analyse_pdf.executor": "Run",
-    "Python.classement.executor": "Run",
-    "Python.classeur.executor": "Run",
-    "Python.claude.executor": "Run",
-    "Python.click.executor": "Run",
-    "Python.document.executor": "Run",
-    "Python.extraire_text.executor": "Run",
-    "Python.extraire_text_pdf.executor": "Run",
-    "Python.identify_files.executor": "Run",
-    "Python.load_config_simple.executor": "Debug",
-    "Python.main affiche.executor": "Run",
-    "Python.main identifie.executor": "Debug",
-    "Python.main range.executor": "Run",
-    "Python.main verifie.executor": "Debug",
-    "Python.main.executor": "Run",
-    "Python.pathlib.executor": "Debug",
-    "Python.rename_hypotèques.executor": "Debug",
-    "Python.rename_pdf.executor": "Debug",
-    "Python.t_click.executor": "Debug",
-    "Python.t_pathlib.executor": "Run",
-    "Python.tcli.executor": "Run",
-    "Python.test_click.executor": "Debug",
-    "Python.tlog.executor": "Run",
-    "Python.tlog_class.executor": "Run",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/yogi/Docker/appl.classeur",
-    "run.code.analysis.last.selected.profile": "aDefault",
-    "settings.editor.selected.configurable": "preferences.keymap"
-  },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Python"
-    ]
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python tests.Python tests for tests.test_classement.TestTrouverBaseRecherche.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classement.TestTrouverBaseRecherche.test_base_provided.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classement_identification.TestIdentifierDocument.test_identifier_document_multiple_classeurs_first_match.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classement_identification.TestIdentifierDocument.test_identifier_document_no_matching_classeur.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classement_identification.TestIdentifierDocument.test_identifier_document_no_text.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classement_identification.TestIdentifierDocument.test_identifier_document_success.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classeur.TestClasseur.test_classeur_can_identify_document_false.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classeur.TestClasseur.test_classeur_can_identify_document_no_patterns.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.Python tests for tests.test_classeur.TestClasseur.test_classeur_can_identify_document_true.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classeur.TestClasseur.test_classeur_get_description_missing.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classeur.TestClasseur.test_classeur_repr.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classeur.TestClasseur.test_classeur_str.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.Python tests for tests.test_classeur.TestClasseurConfig.test_classeur_config_from_dict_partial.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_classeur_identification.TestClasseurIdentification.test_can_identify_document_missing_one_pattern.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.Python tests for tests.test_document.TestDocument.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_empty_text.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_method_exists.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_simple_method_exists.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_swift.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_with_mock.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_classement.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_classement_identification.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_classeur_identification.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_document_extraction.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in tests.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_classement.TestTrouverFichiersPdf.test_directory_with_nested_pdfs.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.classe.executor&quot;: &quot;Run&quot;,
+    &quot;Python.classement.executor&quot;: &quot;Run&quot;,
+    &quot;Python.classeur.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.document.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_classement.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;python.packages.toolwindow.project.migrated.to.right.top.v2&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   }
-}]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$APPLICATION_CONFIG_DIR$/scratches" />
-    </key>
-  </component>
+}</component>
   <component name="RunManager" selected="Python tests.Python tests in tests">
-    <configuration name="analyse_pdf" type="PythonConfigurationType" factoryName="Python">
-      <module name="appl.classeur" />
-      <selectedOptions>
-        <option name="envPaths" visible="false" />
-      </selectedOptions>
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-        <env name=" PATH" value="/home/yogi/appl/classeur/venv/bin:/usr/local/bin:/usr/bin:/bin:" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/analyse_pdf.py" />
-      <option name="PARAMETERS" value="-o &quot;$PROJECT_DIR$/factures/Garage Limat, Neyruz/LIMAT préparation expertise.min.pdf&quot;" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="classement" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="classe" type="PythonConfigurationType" factoryName="Python">
       <module name="appl.classeur" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -167,13 +195,14 @@
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
       <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/classement.py" />
-      <option name="PARAMETERS" value="test/in -ldebug" />
+      <option name="PARAMETERS" value="&quot;test/in/notification.pdf&quot; -b test -ldebug" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -181,119 +210,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main affiche" type="PythonConfigurationType" factoryName="Python">
-      <module name="appl.classeur" />
-      <selectedOptions>
-        <option name="envPaths" visible="false" />
-      </selectedOptions>
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-        <env name=" PATH" value="/home/yogi/appl/classeur/venv/bin:/usr/local/bin:/usr/bin:/bin:" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="affiche --base test" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="main identifie" type="PythonConfigurationType" factoryName="Python">
-      <module name="appl.classeur" />
-      <selectedOptions>
-        <option name="envPaths" visible="false" />
-      </selectedOptions>
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-        <env name=" PATH" value="/home/yogi/appl/classeur/venv/bin:/usr/local/bin:/usr/bin:/bin:" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="--log info identifie &quot;ranger/Rapport trimestriel 1. trimestre 2026_07042026_153139215.pdf&quot; --base ./finances" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="main range" type="PythonConfigurationType" factoryName="Python">
-      <module name="appl.classeur" />
-      <selectedOptions>
-        <option name="envPaths" visible="false" />
-      </selectedOptions>
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-        <env name=" PATH" value="/home/yogi/appl/classeur/venv/bin:/usr/local/bin:/usr/bin:/bin:" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="range --pdf &quot;test/out2/&quot;" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="main verifie" type="PythonConfigurationType" factoryName="Python">
-      <module name="appl.classeur" />
-      <selectedOptions>
-        <option name="envPaths" visible="false" />
-      </selectedOptions>
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-        <env name=" PATH" value="/home/yogi/appl/classeur/venv/bin:/usr/local/bin:/usr/bin:/bin:" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="verifie --pdf --ocr test/out1" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests for tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_error" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests for tests.test_document.TestDocument" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="appl.classeur" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -303,13 +220,14 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
       <option name="RUN_TOOL" value="" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_error&quot;" />
+      <option name="_new_target" value="&quot;tests.test_document.TestDocument&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_mock" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="appl.classeur" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -319,159 +237,166 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
       <option name="RUN_TOOL" value="" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_mock&quot;" />
+      <option name="_new_target" value="&quot;tests.test_document_extraction.TestDocumentExtractTextSimple&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests in tests" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_empty_text" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="appl.classeur" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_empty_text&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_method_exists" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="appl.classeur" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_method_exists&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_swift" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="appl.classeur" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_swift&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests in tests" type="tests" factoryName="Autodetect" nameIsGenerated="true">
+      <module name="appl.classeur" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
       <option name="RUN_TOOL" value="" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;$PROJECT_DIR$/tests&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_document.TestDocumentIdentification.test_verifier_identification_success" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="appl.classeur" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="RUN_TOOL" value="" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_document.TestDocumentIdentification.test_verifier_identification_success&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_document.TestDocumentPatterns.test_verifier_patterns_failure" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="appl.classeur" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="RUN_TOOL" value="" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_document.TestDocumentPatterns.test_verifier_patterns_failure&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <list>
-      <item itemvalue="Python.analyse_pdf" />
-      <item itemvalue="Python.classement" />
-      <item itemvalue="Python.main affiche" />
-      <item itemvalue="Python.main identifie" />
-      <item itemvalue="Python.main range" />
-      <item itemvalue="Python.main verifie" />
-      <item itemvalue="Python tests.Python tests for tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_error" />
-      <item itemvalue="Python tests.Python tests for tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_mock" />
-      <item itemvalue="Python tests.pytest for test_document.TestDocumentIdentification.test_verifier_identification_success" />
-      <item itemvalue="Python tests.pytest for test_document.TestDocumentPatterns.test_verifier_patterns_failure" />
+      <item itemvalue="Python.classe" />
       <item itemvalue="Python tests.Python tests in tests" />
+      <item itemvalue="Python tests.Python tests for tests.test_document.TestDocument" />
+      <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_method_exists" />
+      <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_swift" />
+      <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple" />
+      <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_empty_text" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Python tests in tests" />
-        <item itemvalue="Python tests.pytest for test_document.TestDocumentPatterns.test_verifier_patterns_failure" />
-        <item itemvalue="Python tests.pytest for test_document.TestDocumentIdentification.test_verifier_identification_success" />
-        <item itemvalue="Python tests.Python tests for tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_error" />
-        <item itemvalue="Python tests.Python tests for tests.test_document.TestDocumentTextExtraction.test_extraire_texte_swift_mock" />
+        <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_swift" />
+        <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_method_exists" />
+        <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple" />
+        <item itemvalue="Python tests.Python tests for tests.test_document.TestDocument" />
+        <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_empty_text" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-f2b7a9f6281b-6e1f45a539f7-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.29346.142" />
+        <option value="bundled-python-sdk-73a66231627c-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.10968.92" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="4d587c7e-c09d-42d0-b0e1-f880e8bdc5ef" name="Changes" comment="" />
-      <created>1771150121456</created>
+      <changelist id="75e45d19-539a-4dc0-aab5-8715b88b7a3f" name="Changes" comment="" />
+      <created>1782638959841</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1771150121456</updated>
+      <updated>1782638959841</updated>
     </task>
-    <task id="LOCAL-00001" summary="Testé sur les classeurs de finances">
+    <task id="LOCAL-00001" summary="test subprocess">
       <option name="closed" value="true" />
-      <created>1779382060555</created>
+      <created>1794422974949</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1779382060555</updated>
+      <updated>1794422974949</updated>
     </task>
-    <task id="LOCAL-00002" summary="Testé sur les classeurs de finances">
-      <option name="closed" value="true" />
-      <created>1779382795935</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1779382795935</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Extraction de texte qui afffiche que le texte avec le module donné en argument">
-      <option name="closed" value="true" />
-      <created>1779459544457</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1779459544457</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Considère l'argument du nombre de pages">
-      <option name="closed" value="true" />
-      <created>1779460293457</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1779460293457</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Description du projet fait par mistral-vibe">
-      <option name="closed" value="true" />
-      <created>1779539416979</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1779539416979</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Testé sur les classeurs de finances" />
-    <MESSAGE value="Extraction de texte qui afffiche que le texte avec le module donné en argument" />
-    <MESSAGE value="Considère l'argument du nombre de pages" />
-    <MESSAGE value="Description du projet fait par mistral-vibe" />
-    <option name="LAST_COMMIT_MESSAGE" value="Description du projet fait par mistral-vibe" />
+    <MESSAGE value="test subprocess" />
+    <option name="LAST_COMMIT_MESSAGE" value="test subprocess" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/tests/test_document.py</url>
-          <line>293</line>
-          <option name="timeStamp" value="203" />
+          <url>file://$PROJECT_DIR$/tests/test_classeur_identification.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/test_document_extraction.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/test_document_extraction.py</url>
+          <line>71</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/test_document_extraction.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/document.py</url>
+          <line>245</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/document.py</url>
+          <line>268</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

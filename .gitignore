@@ -1,2 +1,7 @@
 # Project exclude paths
-/venv/
+venv/
+Banques
+Factures
+Finances
+test/
+swiftocr

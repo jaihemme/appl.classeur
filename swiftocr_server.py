@@ -72,8 +72,8 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"SwiftOCR directory: {SWIFTOCR_DIR}")
-    print(f"SwiftOCR executable: {SWIFTOCR}")
-    print(f"Listening on port {PORT}")
+    print(f"Dossier SwiftOCR: {SWIFTOCR_DIR}")
+    print(f"Exécutable SwiftOCR: {SWIFTOCR}")
+    print(f"En écoute sur le port {PORT}")
 
     HTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
