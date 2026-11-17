@@ -7,7 +7,7 @@ from pathlib import Path
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 SWIFTOCR = os.environ.get("SWIFTOCR", "/usr/local/bin/swiftocr")
-SWIFTOCR_DIR = Path(os.environ["SWIFTOCR_DIR"]).resolve()
+SOURCE = Path(os.environ["SOURCE"]).resolve()
 PORT = int(os.environ.get("SWIFTOCR_PORT", "8765"))
 
 
@@ -32,10 +32,13 @@ class Handler(BaseHTTPRequestHandler):
             pages = str(params.get("pages", "1"))
 
             # Reconstruire le chemin macOS
-            path = (SWIFTOCR_DIR / filename).resolve()
+            path = (SOURCE / filename).resolve()
+#           print(f"            SOURCE: {SOURCE}")
+#           print(f"          filename: {filename}")
+#           print(f"document à traiter: {path}")
 
             # Empêcher l'accès hors du répertoire autorisé
-            if not path.is_relative_to(SWIFTOCR_DIR):
+            if not path.is_relative_to(SOURCE):
                 self.send_error(403)
                 return
 
@@ -72,7 +75,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"Dossier SwiftOCR: {SWIFTOCR_DIR}")
+    print(f"Dossier Source: {SOURCE}")
     print(f"Exécutable SwiftOCR: {SWIFTOCR}")
     print(f"En écoute sur le port {PORT}")
 

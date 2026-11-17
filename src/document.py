@@ -14,11 +14,13 @@ import subprocess
 import urllib.request
 import urllib.error
 import json
+import shutil
 
 logger = logging.getLogger(__name__)
 
 MODE: int = 0o100400  # 'r--------'
-SWIFTOCR = "/Users/yogi/Docker/appl.classeur/swiftocr"
+SWIFTOCR = os.environ.get("SWIFTOCR", "~/.local/bin/swiftocr")
+SOURCE = os.environ.get("SOURCE", "/source")
 
 def is_running_in_docker():
     # Vérifie l'existence du fichier .dockerenv ou la présence de 'docker' dans cgroup
@@ -65,6 +67,7 @@ class Document:
     def __post_init__(self):
         """Initialisation après la création de l'instance."""
         if isinstance(self.path, str):
+            # noinspection unreachable-code
             self.path = Path(self.path)
         self.path = self.path.resolve()
         if self.name is None:
@@ -82,7 +85,7 @@ class Document:
     @staticmethod
     def convertir_date(date_str: str) -> Optional[datetime]:
         # conversion de date en texte en date objet
-        if date_str is '':
+        if not date_str:
             logger.error("il manque une valeur pour le traitement de la date")
             return None
 
@@ -260,9 +263,14 @@ class Document:
             code = result.returncode  # 0 = succès
         else:
             logger.error(f"le programme swiftocr n'existe pas: {SWIFTOCR}")
-            logger.info(f"essai du service ocr via api: {SWIFTOCR_URL} ...")
-            req_data:bytes = (json.dumps({"file": str(self.path), "lang": "fr-FR", "pages": str(self.pages)})
-                              .encode('utf-8'))
+            if not self.path.is_relative_to(SOURCE):
+                logger.error(f"le fichichier n'est pas relatif à la source {SOURCE}")
+                return None
+            file = str(self.path.relative_to(SOURCE))
+            logger.info(f"essai du service ocr via api: {SWIFTOCR_URL} - file: {file} ...")
+            req_data:bytes = (json.dumps(
+                {"file": file, "lang": "fr-FR", "pages": str(self.pages)}
+            ).encode('utf-8'))
             req = urllib.request.Request(url=SWIFTOCR_URL, data=req_data, method="POST")
 
             try:
@@ -343,9 +351,6 @@ class Document:
                     logger.debug(f"{element[1]}: {partie} - nom_fichier: {nom_fichier}")
                 else:
                     partie = self.pattern_values[element[1]]
-                    if partie is None:
-                        logger.error(f"'{element[0]}.{element[1]}' est un élément obligatoire pour le nom de fichier")
-                        break
                     nom_fichier = nom_fichier + ' ' + partie
                     logger.debug(f"{element[1]}: {partie} - nom_fichier: {nom_fichier}")
             else:
@@ -437,6 +442,7 @@ class Document:
 
         return False
 
+    # noinspection bad-assignment
     def ranger(self, classeur: Classeur) -> bool:
         # formatage du timestamp
         date_fichier = self.pattern_values.get('timestamp', None)
@@ -467,7 +473,9 @@ class Document:
             logger.warning(f"doublon: renommage du fichier -> {nouveau_nom_avec_timestamp}")
 
         # renomme et déplace de le fichier
-        self.path = self.path.rename(nouveau_chemin)
+        # self.path = self.path.rename(nouveau_chemin)
+        # utilise shutil pour éviter l'erreur "[Errno 18] Invalid cross-device link"
+        self.path = shutil.move(self.path, nouveau_chemin)
         print(f"  ℹ️ Document classé -> '{self.path}'")
 
         # touch CONFIG_FILE pour avoir ce fichier en-haut de la liste

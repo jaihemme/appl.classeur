@@ -5,27 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75e45d19-539a-4dc0-aab5-8715b88b7a3f" name="Changes" comment="test subprocess">
+      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classement.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_docker.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/appl.classeur.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/appl.classeur.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scratch_pdf2image.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scratch_torch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scratch_unicode.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classement.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/classement.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classeur.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/classeur.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cli_options.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/document.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/document.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/extraire_text.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logging_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/logging_config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/swiftocr_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/swiftocr_server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp.readme.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vision.readme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vision.swift" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,61 +55,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0000000000002822" />
-      <entry key="S60" value="1.000000919927635" />
-      <entry key="M2" value="1.0016612314784257" />
-      <entry key="M5" value="1.1530108513487163" />
-      <entry key="M10" value="2.0167652806627094" />
-      <entry key="M15" value="3.907325345907445" />
-      <entry key="M30" value="13.135146098743666" />
-      <entry key="H1" value="29.39738006262423" />
-      <entry key="H2" value="48.34556096295442" />
-      <entry key="H4" value="68.43511781454818" />
-      <entry key="D1" value="134.05864198001382" />
-      <entry key="W1" value="174.70750320158848" />
+      <entry key="MS100" value="1.000132658064273" />
+      <entry key="MS500" value="1.1677053168399618" />
+      <entry key="S2" value="1.6547585512409935" />
+      <entry key="S5" value="2.080518048378343" />
+      <entry key="S10" value="2.7727342340842407" />
+      <entry key="S30" value="5.626900446951289" />
+      <entry key="S60" value="7.942183126140638" />
+      <entry key="M2" value="10.06808970304348" />
+      <entry key="M5" value="13.115311422588137" />
+      <entry key="M10" value="16.529430713052292" />
+      <entry key="M15" value="19.552268350150936" />
+      <entry key="M30" value="25.6735125121601" />
+      <entry key="H1" value="31.0181684190685" />
+      <entry key="H2" value="34.74125568887156" />
+      <entry key="H4" value="39.841723509097434" />
+      <entry key="D1" value="120.13686539660729" />
+      <entry key="W1" value="251.5108596289364" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="5.1074403330473015E-89" />
-      <entry key="S5" value="4.8226008760235775E-36" />
-      <entry key="S10" value="2.196042093408862E-18" />
-      <entry key="S30" value="1.2998110363229286E-6" />
-      <entry key="S60" value="0.0011400925560334698" />
-      <entry key="M2" value="0.03376525786731321" />
-      <entry key="M5" value="0.2583316266762388" />
-      <entry key="M10" value="0.5582554266630171" />
-      <entry key="M15" value="0.918383220591347" />
-      <entry key="M30" value="2.548033659509593" />
-      <entry key="H1" value="5.538314129719424" />
-      <entry key="H2" value="9.46055409688732" />
-      <entry key="H4" value="14.25007106082465" />
-      <entry key="D1" value="30.306788363273988" />
-      <entry key="W1" value="39.842913142888754" />
+      <entry key="MS500" value="2.9803746556E-313" />
+      <entry key="S2" value="7.388694588875902E-79" />
+      <entry key="S5" value="5.590196657007275E-32" />
+      <entry key="S10" value="2.364359671667421E-16" />
+      <entry key="S30" value="6.18354958513816E-6" />
+      <entry key="S60" value="0.0024866748605597857" />
+      <entry key="M2" value="0.049896264447898" />
+      <entry key="M5" value="0.3283272532294584" />
+      <entry key="M10" value="0.8266171022173272" />
+      <entry key="M15" value="1.280731750844083" />
+      <entry key="M30" value="2.1678606882754075" />
+      <entry key="H1" value="2.915222232430522" />
+      <entry key="H2" value="3.4738765665368425" />
+      <entry key="H4" value="5.255001608953384" />
+      <entry key="D1" value="34.179140701415186" />
+      <entry key="W1" value="70.84605535831386" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.10294887715844663" />
-      <entry key="MS500" value="0.6346354430099024" />
-      <entry key="S2" value="0.8925469714729767" />
-      <entry key="S5" value="0.9555478337729125" />
-      <entry key="S10" value="0.9775212702406595" />
-      <entry key="S30" value="0.9924514753922298" />
-      <entry key="S60" value="0.9973328093772506" />
-      <entry key="M2" value="1.0331438777344615" />
-      <entry key="M5" value="1.409381997214686" />
-      <entry key="M10" value="2.573099532441819" />
-      <entry key="M15" value="4.823075240907206" />
-      <entry key="M30" value="15.677916038106622" />
-      <entry key="H1" value="34.92910715874662" />
-      <entry key="H2" value="57.79992694289233" />
-      <entry key="H4" value="82.68008877304608" />
-      <entry key="D1" value="164.3634534685795" />
-      <entry key="W1" value="214.5500424537082" />
+      <entry key="MS100" value="4.557788747989295E-4" />
+      <entry key="MS500" value="0.26020419049997895" />
+      <entry key="S2" value="1.1574477312925704" />
+      <entry key="S5" value="1.8353661301884334" />
+      <entry key="S10" value="2.6403313616383373" />
+      <entry key="S30" value="5.579582559535752" />
+      <entry key="S60" value="7.9201472029037765" />
+      <entry key="M2" value="10.104349621323417" />
+      <entry key="M5" value="13.434971145795153" />
+      <entry key="M10" value="17.34583996451055" />
+      <entry key="M15" value="20.821345616552325" />
+      <entry key="M30" value="27.830142662937345" />
+      <entry key="H1" value="33.92533054886644" />
+      <entry key="H2" value="38.210245331983934" />
+      <entry key="H4" value="45.093732499272875" />
+      <entry key="D1" value="154.3142239412963" />
+      <entry key="W1" value="322.35637063089695" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -162,7 +150,7 @@
     &quot;Python tests.Python tests in test_document_extraction.py.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.Python tests in tests.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.pytest for test_classement.TestTrouverFichiersPdf.test_directory_with_nested_pdfs.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.classe.executor&quot;: &quot;Run&quot;,
+    &quot;Python.classe.executor&quot;: &quot;Debug&quot;,
     &quot;Python.classement.executor&quot;: &quot;Run&quot;,
     &quot;Python.classeur.executor&quot;: &quot;Debug&quot;,
     &quot;Python.document.executor&quot;: &quot;Debug&quot;,
@@ -184,7 +172,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python tests.Python tests in tests">
+  <component name="RunManager" selected="Python.classe">
     <configuration name="classe" type="PythonConfigurationType" factoryName="Python">
       <module name="appl.classeur" />
       <option name="ENV_FILES" value="" />
@@ -192,6 +180,7 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="SOURCE" value="$PROJECT_DIR$/test/in" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
@@ -202,7 +191,7 @@
       <option name="DEBUG_JUST_MY_CODE" value="true" />
       <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/classement.py" />
-      <option name="PARAMETERS" value="&quot;test/in/notification.pdf&quot; -b test -ldebug" />
+      <option name="PARAMETERS" value="&quot;test/in/Rapport du 4e trimestre 2025 (placements).pdf&quot; -b test -ldebug" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -324,10 +313,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.Python tests for tests.test_document.TestDocument" />
         <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_swift" />
         <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_method_exists" />
         <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple" />
-        <item itemvalue="Python tests.Python tests for tests.test_document.TestDocument" />
         <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_empty_text" />
       </list>
     </recent_temporary>
@@ -387,16 +376,6 @@
           <url>file://$PROJECT_DIR$/tests/test_document_extraction.py</url>
           <line>59</line>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/document.py</url>
-          <line>245</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/document.py</url>
-          <line>268</line>
-          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

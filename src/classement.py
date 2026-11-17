@@ -86,7 +86,10 @@ def trouver_fichiers_pdf(source: str) -> list:
                 if resolved not in pdf_files:
                     pdf_files.append(resolved)
         
-        if not pdf_files:
+        if pdf_files:
+            for _ in pdf_files:
+                print(f"Fichier PDF à traiter: {_}")
+        else:
             raise ValueError(f"Aucun fichier PDF trouvé dans le dossier: {source_path}")
     else:
         raise ValueError(f"La source n'est ni un fichier ni un dossier: {source_path}")

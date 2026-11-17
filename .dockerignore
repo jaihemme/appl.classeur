@@ -1,0 +1,32 @@
+# Contexte de build limité au strict nécessaire
+.git
+.gitignore
+.idea
+.pytest_cache
+__pycache__
+**/__pycache__
+*.pyc
+.DS_Store
+**/.DS_Store
+
+# Environnements et outils non embarqués
+venv
+
+# Données et tests (mappés par volumes, jamais dans l'image)
+test
+tests
+
+# Binaires et scripts macOS (l'OCR passe par l'API swiftocr_server sur le host)
+swiftocr
+swiftocr_client.sh
+swiftocr_server.py
+macos_service.py
+
+# Divers
+Banques
+Factures
+Finances
+Modelfile
+README.md
+Dockerfile
+test_docker.sh
