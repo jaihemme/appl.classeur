@@ -172,7 +172,7 @@ class Document:
         if self.texte:
             return self.texte
 
-        logger.debug(f"extraction de texte ({self.pages} page(s)) avec la méthode {self.extracteur}")
+        logger.debug(f"extraction de texte ({self.pages} page(s)) avec la méthode {self.extracteur} ...")
         texte:Optional[str] = None
         if self.extracteur == 'simple' or self.extracteur == "tolerant":
             texte = self.extract_text_pdf()
@@ -247,7 +247,7 @@ class Document:
     def extract_text_swift(self) -> Optional[str]:
         """Extrait le texte d'un fichier pdf avec le programme swift sur MacOS."""
         self.extracteur = 'mac'
-        logger.debug(f"extraction swiftocr: {self.path} - {self.pages}")
+        logger.debug(f"extraction swiftocr: {self.path} - {self.pages} ...")
         stdout = ''
         stderr = ''
         code = 0

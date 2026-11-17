@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75e45d19-539a-4dc0-aab5-8715b88b7a3f" name="Changes" comment="test subprocess">
-      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/classement.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_docker.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dockerhub-overview.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/appl.classeur.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/appl.classeur.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classement.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/classement.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/document.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/document.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/swiftocr_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/swiftocr_server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,61 +51,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.000132658064273" />
-      <entry key="MS500" value="1.1677053168399618" />
-      <entry key="S2" value="1.6547585512409935" />
-      <entry key="S5" value="2.080518048378343" />
-      <entry key="S10" value="2.7727342340842407" />
-      <entry key="S30" value="5.626900446951289" />
-      <entry key="S60" value="7.942183126140638" />
-      <entry key="M2" value="10.06808970304348" />
-      <entry key="M5" value="13.115311422588137" />
-      <entry key="M10" value="16.529430713052292" />
-      <entry key="M15" value="19.552268350150936" />
-      <entry key="M30" value="25.6735125121601" />
-      <entry key="H1" value="31.0181684190685" />
-      <entry key="H2" value="34.74125568887156" />
-      <entry key="H4" value="39.841723509097434" />
-      <entry key="D1" value="120.13686539660729" />
-      <entry key="W1" value="251.5108596289364" />
+      <entry key="MS100" value="6.188717528015314E-5" />
+      <entry key="MS500" value="0.14398595529366967" />
+      <entry key="S2" value="0.6159990367229351" />
+      <entry key="S5" value="0.8238291505254426" />
+      <entry key="S10" value="0.9131947819362157" />
+      <entry key="S30" value="1.4419761504955713" />
+      <entry key="S60" value="2.6016286434998848" />
+      <entry key="M2" value="4.083923819706929" />
+      <entry key="M5" value="5.746263278316877" />
+      <entry key="M10" value="6.68503988394915" />
+      <entry key="M15" value="7.367909871246956" />
+      <entry key="M30" value="10.844597378396974" />
+      <entry key="H1" value="18.962266809035007" />
+      <entry key="H2" value="28.769369644488997" />
+      <entry key="H4" value="38.838184393519654" />
+      <entry key="D1" value="123.1477332114957" />
+      <entry key="W1" value="257.99344897252945" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="2.9803746556E-313" />
-      <entry key="S2" value="7.388694588875902E-79" />
-      <entry key="S5" value="5.590196657007275E-32" />
-      <entry key="S10" value="2.364359671667421E-16" />
-      <entry key="S30" value="6.18354958513816E-6" />
-      <entry key="S60" value="0.0024866748605597857" />
-      <entry key="M2" value="0.049896264447898" />
-      <entry key="M5" value="0.3283272532294584" />
-      <entry key="M10" value="0.8266171022173272" />
-      <entry key="M15" value="1.280731750844083" />
-      <entry key="M30" value="2.1678606882754075" />
-      <entry key="H1" value="2.915222232430522" />
-      <entry key="H2" value="3.4738765665368425" />
-      <entry key="H4" value="5.255001608953384" />
-      <entry key="D1" value="34.179140701415186" />
-      <entry key="W1" value="70.84605535831386" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000001314028588" />
+      <entry key="S5" value="1.0017678358049125" />
+      <entry key="S10" value="1.0420456422820248" />
+      <entry key="S30" value="1.350024116845418" />
+      <entry key="S60" value="1.6699481020290512" />
+      <entry key="M2" value="2.2745235144203644" />
+      <entry key="M5" value="3.7238436192584095" />
+      <entry key="M10" value="5.077786501869652" />
+      <entry key="M15" value="5.817531300175502" />
+      <entry key="M30" value="7.023941518486953" />
+      <entry key="H1" value="8.378918955520158" />
+      <entry key="H2" value="9.739464862689516" />
+      <entry key="H4" value="11.897793767808862" />
+      <entry key="D1" value="40.73279562748775" />
+      <entry key="W1" value="78.41476546544821" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="4.557788747989295E-4" />
-      <entry key="MS500" value="0.26020419049997895" />
-      <entry key="S2" value="1.1574477312925704" />
-      <entry key="S5" value="1.8353661301884334" />
-      <entry key="S10" value="2.6403313616383373" />
-      <entry key="S30" value="5.579582559535752" />
-      <entry key="S60" value="7.9201472029037765" />
-      <entry key="M2" value="10.104349621323417" />
-      <entry key="M5" value="13.434971145795153" />
-      <entry key="M10" value="17.34583996451055" />
-      <entry key="M15" value="20.821345616552325" />
-      <entry key="M30" value="27.830142662937345" />
-      <entry key="H1" value="33.92533054886644" />
-      <entry key="H2" value="38.210245331983934" />
-      <entry key="H4" value="45.093732499272875" />
-      <entry key="D1" value="154.3142239412963" />
-      <entry key="W1" value="322.35637063089695" />
+      <entry key="MS100" value="1.4563626898226052E-4" />
+      <entry key="MS500" value="0.28087909890275453" />
+      <entry key="S2" value="1.2205312548660956" />
+      <entry key="S5" value="1.642514306093389" />
+      <entry key="S10" value="1.854939354631956" />
+      <entry key="S30" value="2.7463431933545595" />
+      <entry key="S60" value="4.241172884835898" />
+      <entry key="M2" value="6.332999898301008" />
+      <entry key="M5" value="9.447995172223393" />
+      <entry key="M10" value="11.745852063085255" />
+      <entry key="M15" value="13.17184186565259" />
+      <entry key="M30" value="17.858995974150382" />
+      <entry key="H1" value="27.333810450684126" />
+      <entry key="H2" value="38.503548310605815" />
+      <entry key="H4" value="50.73245310172351" />
+      <entry key="D1" value="163.87861550684042" />
+      <entry key="W1" value="336.4076439643045" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -150,10 +146,12 @@
     "Python tests.Python tests in test_document_extraction.py.executor": "Run",
     "Python tests.Python tests in tests.executor": "Run",
     "Python tests.pytest for test_classement.TestTrouverFichiersPdf.test_directory_with_nested_pdfs.executor": "Debug",
-    "Python.classe.executor": "Run",
+    "Python.classe.executor": "Debug",
     "Python.classement.executor": "Run",
     "Python.classeur.executor": "Debug",
     "Python.document.executor": "Debug",
+    "Python.extraire-texte.executor": "Run",
+    "Python.extraire_text.executor": "Debug",
     "Python.test.executor": "Run",
     "Python.test_classement.executor": "Run",
     "RunOnceActivity.MCP Project settings loaded": "true",
@@ -169,10 +167,10 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "python.packages.toolwindow.project.migrated.to.right.top.v2": "true",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.classe">
+  <component name="RunManager" selected="Python.extraire-texte">
     <configuration name="classe" type="PythonConfigurationType" factoryName="Python">
       <module name="appl.classeur" />
       <option name="ENV_FILES" value="" />
@@ -183,7 +181,7 @@
         <env name="SOURCE" value="$PROJECT_DIR$/test/in" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
+      <option name="SDK_NAME" value="Python 3.15 (appl.classeur)" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -192,6 +190,32 @@
       <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/classement.py" />
       <option name="PARAMETERS" value="&quot;test/in/Rapport du 4e trimestre 2025 (placements).pdf&quot; -b test -ldebug" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="extraire-texte" type="PythonConfigurationType" factoryName="Python">
+      <module name="appl.classeur" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="SOURCE" value="$PROJECT_DIR$/test/in/" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.15 (appl.classeur)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/extraire_text.py" />
+      <option name="PARAMETERS" value="&quot;test/in/Rapport du 4e trimestre 2025 (placements).pdf&quot;" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -290,7 +314,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (appl.classeur)" />
+      <option name="SDK_NAME" value="Python 3.15 (appl.classeur)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -304,6 +328,7 @@
     </configuration>
     <list>
       <item itemvalue="Python.classe" />
+      <item itemvalue="Python.extraire-texte" />
       <item itemvalue="Python tests.Python tests in tests" />
       <item itemvalue="Python tests.Python tests for tests.test_document.TestDocument" />
       <item itemvalue="Python tests.Python tests for tests.test_document_extraction.TestDocumentExtractTextSimple.test_extract_text_method_exists" />
@@ -376,6 +401,11 @@
           <url>file://$PROJECT_DIR$/tests/test_document_extraction.py</url>
           <line>59</line>
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/extraire_text.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
