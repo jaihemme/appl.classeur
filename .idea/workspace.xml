@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75e45d19-539a-4dc0-aab5-8715b88b7a3f" name="Changes" comment="test subprocess">
-      <change afterPath="$PROJECT_DIR$/dockerhub-overview.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/appl.classeur.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/appl.classeur.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/document.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/document.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
