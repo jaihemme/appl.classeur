@@ -34,6 +34,7 @@ def trouver_base_recherche(base: str, source: str) -> Path:
         
     Returns:
         Chemin absolu du dossier où chercher les classeurs
+        Si la base n'est pas donnée explicitement, on prend le dossier de la source
     """
     if base:
         return Path(base).resolve()
@@ -110,8 +111,8 @@ def identifier_document(document: Document, classeurs: list) -> Optional[Classeu
     for classeur in classeurs:
         texte = document.extract_text(classeur)
         if texte is None:
-            logger.warning(f"aucun texte extrait du document: {document.name}")
-            continue
+            print(f"  ❌ aucun texte extrait du document: {document.name}")
+            return None
 
         if classeur.can_identify_document(texte):
             logger.info(f"document {document.name} identifié dans le classeur {classeur}")
@@ -123,12 +124,12 @@ def identifier_document(document: Document, classeurs: list) -> Optional[Classeu
 
 
 @click.command()
-@click.argument("source", type=click.Path(exists=True))
-@click.option("-l", "--log", type=click.Choice(["info", "warn", "error", "debug", "none"],
+@click.argument("source", type=click.Path(exists=True)) # type: ignore
+@click.option("-l", "--log", type=click.Choice(["info", "warn", "error", "debug", "none"], # type: ignore
         case_sensitive=False), default="none", show_default=True, help="niveau de journalisation")
-@click.option("-b", "--base", type=click.Path(), help="dossier de base des classeurs")
-@click.option("-e", "--extracteur", type=click.Choice(["mac", "simple", "tolerant"],
-        case_sensitive=False), show_default=True, help="choix du module d'extraction")
+@click.option("-b", "--base", type=click.Path(), help="dossier de base des classeurs") # type: ignore
+@click.option("-e", "--extracteur", type=click.Choice(["mac", "simple", "tolerant"], # type: ignore
+        case_sensitive=False), show_default=True, help="choix du module d'extraction") # type: ignore
 @click.option("-p", "--pages", type=int, help="nombre de pages à extraire")
 @click.option("-r", "--ranger", is_flag=True, help="range le(s) document(s) dans le classeur identifié")
 @click.option("-t", "--texte", is_flag=True, help="affiche le texte extrait")
@@ -211,7 +212,7 @@ def initialise_logging(log):
     )
 
 # Wrapper pour tracer automatiquement
-def trace_calls(frame, event, arg):
+def trace_calls(frame, event):
     if event == 'call':
         filename = frame.f_code.co_filename
         lineno = frame.f_lineno

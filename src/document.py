@@ -67,8 +67,7 @@ class Document:
     def __post_init__(self):
         """Initialisation après la création de l'instance."""
         if isinstance(self.path, str):
-            # noinspection unreachable-code
-            self.path = Path(self.path)
+            self.path = Path(self.path) # noinspection unreachable-code
         self.path = self.path.resolve()
         if self.name is None:
             self.name = self.path.stem

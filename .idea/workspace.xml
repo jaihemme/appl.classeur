@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75e45d19-539a-4dc0-aab5-8715b88b7a3f" name="Changes" comment="test subprocess">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classement.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/classement.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classeur.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/classeur.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/document.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/document.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,61 +50,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="6.188717528015314E-5" />
-      <entry key="MS500" value="0.14398595529366967" />
-      <entry key="S2" value="0.6159990367229351" />
-      <entry key="S5" value="0.8238291505254426" />
-      <entry key="S10" value="0.9131947819362157" />
-      <entry key="S30" value="1.4419761504955713" />
-      <entry key="S60" value="2.6016286434998848" />
-      <entry key="M2" value="4.083923819706929" />
-      <entry key="M5" value="5.746263278316877" />
-      <entry key="M10" value="6.68503988394915" />
-      <entry key="M15" value="7.367909871246956" />
-      <entry key="M30" value="10.844597378396974" />
-      <entry key="H1" value="18.962266809035007" />
-      <entry key="H2" value="28.769369644488997" />
-      <entry key="H4" value="38.838184393519654" />
-      <entry key="D1" value="123.1477332114957" />
-      <entry key="W1" value="257.99344897252945" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="1.013217072579002E-119" />
+      <entry key="S5" value="2.5251142294800743E-48" />
+      <entry key="S10" value="1.5894758548228185E-24" />
+      <entry key="S30" value="1.2415323312879891E-8" />
+      <entry key="S60" value="1.353618055934004E-4" />
+      <entry key="M2" value="0.015916768764943013" />
+      <entry key="M5" value="0.4770428057579689" />
+      <entry key="M10" value="2.6737386369833933" />
+      <entry key="M15" value="5.2170645803919715" />
+      <entry key="M30" value="10.55971535089193" />
+      <entry key="H1" value="15.193846971124605" />
+      <entry key="H2" value="18.269458491331616" />
+      <entry key="H4" value="20.044584542767574" />
+      <entry key="D1" value="29.24291345603052" />
+      <entry key="W1" value="195.19617315305507" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="1.0" />
       <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000001314028588" />
-      <entry key="S5" value="1.0017678358049125" />
-      <entry key="S10" value="1.0420456422820248" />
-      <entry key="S30" value="1.350024116845418" />
-      <entry key="S60" value="1.6699481020290512" />
-      <entry key="M2" value="2.2745235144203644" />
-      <entry key="M5" value="3.7238436192584095" />
-      <entry key="M10" value="5.077786501869652" />
-      <entry key="M15" value="5.817531300175502" />
-      <entry key="M30" value="7.023941518486953" />
-      <entry key="H1" value="8.378918955520158" />
-      <entry key="H2" value="9.739464862689516" />
-      <entry key="H4" value="11.897793767808862" />
-      <entry key="D1" value="40.73279562748775" />
-      <entry key="W1" value="78.41476546544821" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.000000000359518" />
+      <entry key="M2" value="1.00001896096172" />
+      <entry key="M5" value="1.012916479070646" />
+      <entry key="M10" value="1.113650688826095" />
+      <entry key="M15" value="1.2346288335462885" />
+      <entry key="M30" value="1.4843850054928294" />
+      <entry key="H1" value="1.6959777334748787" />
+      <entry key="H2" value="1.8342527995008029" />
+      <entry key="H4" value="1.913375050805401" />
+      <entry key="D1" value="4.492898143661163" />
+      <entry key="W1" value="54.65407873834946" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.4563626898226052E-4" />
-      <entry key="MS500" value="0.28087909890275453" />
-      <entry key="S2" value="1.2205312548660956" />
-      <entry key="S5" value="1.642514306093389" />
-      <entry key="S10" value="1.854939354631956" />
-      <entry key="S30" value="2.7463431933545595" />
-      <entry key="S60" value="4.241172884835898" />
-      <entry key="M2" value="6.332999898301008" />
-      <entry key="M5" value="9.447995172223393" />
-      <entry key="M10" value="11.745852063085255" />
-      <entry key="M15" value="13.17184186565259" />
-      <entry key="M30" value="17.858995974150382" />
-      <entry key="H1" value="27.333810450684126" />
-      <entry key="H2" value="38.503548310605815" />
-      <entry key="H4" value="50.73245310172351" />
-      <entry key="D1" value="163.87861550684042" />
-      <entry key="W1" value="336.4076439643045" />
+      <entry key="MS100" value="1.2513598008430794E-7" />
+      <entry key="MS500" value="0.041636713284125666" />
+      <entry key="S2" value="0.4517197820969604" />
+      <entry key="S5" value="0.7276920729336833" />
+      <entry key="S10" value="0.8530486931785801" />
+      <entry key="S30" value="0.9483994196709434" />
+      <entry key="S60" value="0.9739921040375947" />
+      <entry key="M2" value="1.0027142025766556" />
+      <entry key="M5" value="1.4839666348447678" />
+      <entry key="M10" value="3.7831112167761014" />
+      <entry key="M15" value="6.448004042734248" />
+      <entry key="M30" value="12.041469967587958" />
+      <entry key="H1" value="16.88819525013217" />
+      <entry key="H2" value="20.102796555232796" />
+      <entry key="H4" value="21.95747397259167" />
+      <entry key="D1" value="33.73560862930278" />
+      <entry key="W1" value="249.84985653838547" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -142,7 +145,7 @@
     "Python tests.Python tests in test_document_extraction.py.executor": "Run",
     "Python tests.Python tests in tests.executor": "Run",
     "Python tests.pytest for test_classement.TestTrouverFichiersPdf.test_directory_with_nested_pdfs.executor": "Debug",
-    "Python.classe.executor": "Debug",
+    "Python.classe.executor": "Run",
     "Python.classement.executor": "Run",
     "Python.classeur.executor": "Debug",
     "Python.document.executor": "Debug",
@@ -166,7 +169,7 @@
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.extraire-texte">
+  <component name="RunManager" selected="Python.classe">
     <configuration name="classe" type="PythonConfigurationType" factoryName="Python">
       <module name="appl.classeur" />
       <option name="ENV_FILES" value="" />
@@ -175,6 +178,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
         <env name="SOURCE" value="$PROJECT_DIR$/test/in" />
+        <env name="SWIFTOCR" value="$PROJECT_DIR$/swiftocr" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="Python 3.15 (appl.classeur)" />
@@ -402,6 +406,11 @@
           <url>file://$PROJECT_DIR$/src/extraire_text.py</url>
           <line>13</line>
           <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/document.py</url>
+          <line>69</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

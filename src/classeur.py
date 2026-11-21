@@ -105,7 +105,7 @@ class Classeur:
             return None
     
     @staticmethod
-    def find_classeurs(base_dir: Optional[str] = None) -> List['Classeur']:
+    def find_classeurs(base_dir: str) -> List['Classeur']:
         """Cherche tous les classeurs dans une arborescence de dossiers.
         
         Un classeur est un dossier contenant un fichier '-classeur.json'.
@@ -119,10 +119,7 @@ class Classeur:
         """
         classeurs = []
         
-        if base_dir is None:
-            base_dir = Path.cwd()
-        else:
-            base_dir = Path(base_dir).resolve()
+        base_dir = Path(base_dir).resolve()
         
         if not base_dir.exists():
             logger.warning(f"le dossier de base n'existe pas: {base_dir}")
@@ -140,7 +137,7 @@ class Classeur:
                 if classeur:
                     classeurs.append(classeur)
 
-        Classeur.base = base_dir
+        Classeur.path = base_dir
         return classeurs
     
     def get_config_path(self) -> Path:
@@ -186,8 +183,8 @@ class Classeur:
         """
         return self.config.transform or {}
 
-    def get_nom_fichier(self) -> List[str]:
-        """Récupère le modèle pur le nom de fichier.
+    def get_nom_fichier(self) -> List[List[str]]:
+        """Récupère le modèle pour le nom de fichier.
 
         Returns:
             Liste des éléments constituant le nom du fichier
